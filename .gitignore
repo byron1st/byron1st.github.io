@@ -1,0 +1,38 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE / editors
+.idea/
+.vscode/
+.zed/
+*.swp
+*.swo
+
+# Env / secrets
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
+dist/
+.vite/
+
+# React Router generated route types
+.react-router/
+
+# Test / coverage output
+coverage/
+test-results/
+playwright-report/
+blob-report/
+.playwright/

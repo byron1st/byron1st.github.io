@@ -10,12 +10,12 @@
 
 | 영역 | 선택 | 비고 |
 | --- | --- | --- |
-| Language | TypeScript 5.x (strict) | `noUncheckedIndexedAccess` 포함 |
+| Language | TypeScript 6.0.3 (strict) | `noUncheckedIndexedAccess` 포함. typescript-eslint의 peer가 `<6.1.0`이므로 `~6.0.3`으로 고정 |
 | Runtime | Node.js 24 LTS | 빌드 전용. 런타임 서버 없음. 로컬 24.18.0 |
 | Build | Vite 8 | |
 | UI | React 19 | |
-| SSG | `vite-react-ssg` | 빌드 시 전 라우트 프리렌더 |
-| Routing | React Router (vite-react-ssg가 재수출) | `RouteRecord[]` 선언형 |
+| SSG | React Router 8 framework mode | `ssr: false` + `prerender`로 빌드 시 전 라우트 프리렌더 |
+| Routing | React Router 8 (`@react-router/dev`) | `src/routes.ts` 선언형 (`index()` / `route()`) |
 | Styling | Tailwind CSS v4 + `@tailwindcss/vite` | `@theme inline` 토큰, arbitrary value 금지 |
 | Content (구조화) | YAML + `zod` | 빌드 시 스키마 검증, 실패 시 빌드 중단 |
 | Content (포스트) | Markdown + `gray-matter` + `unified`/`remark`/`rehype` | 커스텀 Vite plugin |
@@ -48,8 +48,8 @@
    ┌────────────────────────────────┐
    │  GitHub Actions                │
    │   typecheck → test → e2e       │
-   │   → vite-react-ssg build       │
-   │   → dist/ (정적 HTML + 에셋)    │
+   │   → react-router build         │
+   │   → dist/client/ (정적 HTML)    │
    └────────────────────────────────┘
             │ upload-pages-artifact
             ▼
@@ -88,40 +88,47 @@ content/posts/*.md ──► plugins/markdown.ts (Vite plugin)
                          · import.meta.glob(lazy)                 → 본문
                                   │
                                   ▼
-                       vite-react-ssg build
-                         routes.tsx의 getStaticPaths로 포스트 경로 확장
-                         라우트별 renderToString → dist/**/index.html
+                       react-router build
+                         react-router.config.ts의 prerender()가
+                         getStaticPaths() + 포스트 slug로 경로 확장
+                         라우트별 프리렌더 → dist/client/**/index.html
                                   │
                                   ▼
-                       ssgOptions.onFinished(dir)
-                         → dist/rss.xml
-                         → dist/sitemap.xml
-                         → dist/robots.txt
+                       react-router.config.ts의 buildEnd()
+                         → dist/client/rss.xml
+                         → dist/client/sitemap.xml
+                         → dist/client/robots.txt
 ```
 
-#### 출력 구조 (`dirStyle: 'nested'`)
+#### 출력 구조
 
 ```
-dist/
+dist/client/
   index.html                       GET /
   about/index.html                 GET /about
   projects/index.html              GET /projects
   posts/index.html                 GET /posts
-  posts/{slug}/index.html          GET /posts/{slug}      ← getStaticPaths로 N개
+  posts/{slug}/index.html          GET /posts/{slug}      ← prerender()로 N개
+  **/*.data                        라우트별 loader 데이터 (클라이언트 내비게이션용)
+  __spa-fallback.html              ssr:false가 항상 생성 — 배포에서 사용하지 않음
   rss.xml
   sitemap.xml
   robots.txt
   assets/*.{js,css,woff2}
 ```
 
-`dirStyle: 'nested'`를 명시한다(기본값 `'flat'`은 `/about.html`을 생성). GitHub Pages가 디렉터리의 `index.html`을 그대로 서빙하므로 딥링크에 SPA 폴백(`404.html` 복사)이 **필요 없다**.
+React Router의 프리렌더는 **기본적으로 중첩 디렉터리 + `index.html`** 로 출력한다. GitHub Pages가 디렉터리의 `index.html`을 그대로 서빙하므로 딥링크에 SPA 폴백(`404.html` 복사)이 **필요 없다**.
+
+`ssr: false`는 프리렌더 대상과 무관하게 `__spa-fallback.html`을 항상 하나 생성한다. `/`를 프리렌더하므로 이 파일은 참조되지 않는다 — 삭제하지 않고 그대로 둔다(무해하며, 지우면 빌드 산출물과 배포물이 달라진다).
+
+`buildDirectory: "dist"`로 설정한다(기본값은 `build`). 정적 산출물은 `dist/client/`에 놓이며 **배포 대상은 이 디렉터리**다.
 
 #### 브라우저 실행 모델
 
 1. 서버가 완성된 HTML을 반환 → 본문이 즉시 보인다(JS 없이도 읽힘).
-2. `<head>` 인라인 스크립트가 **첫 페인트 이전에** `localStorage` → `prefers-color-scheme` 순으로 테마를 결정해 `<html data-theme>`을 설정한다(FOUC 방지).
+2. `<head>` 인라인 스크립트가 **첫 페인트 이전에** `localStorage` → `prefers-color-scheme` 순으로 테마를 결정해 `<html data-theme>`을 설정한다(FOUC 방지). framework mode에서는 문서 셸을 `src/root.tsx`가 렌더하므로 이 스크립트도 거기에 인라인으로 들어간다.
 3. React가 hydrate. 이후 내부 이동은 클라이언트 라우팅.
-4. 포스트 본문은 라우트 `loader`가 lazy chunk를 import → 목록 페이지는 본문을 받지 않는다.
+4. 포스트 본문은 라우트 `loader`가 lazy chunk를 import → 목록 페이지는 본문을 받지 않는다. 프리렌더 시 loader 결과는 `.data` 파일로 직렬화된다.
 
 ### Code / Module
 
@@ -139,10 +146,10 @@ byron1st.github.io/
 ├─ plugins/
 │  └─ markdown.ts               .md → { meta, html } 모듈로 변환하는 Vite plugin
 ├─ scripts/
-│  └─ feeds.ts                  onFinished에서 호출: rss/sitemap/robots 생성
+│  └─ feeds.ts                  buildEnd에서 호출: rss/sitemap/robots 생성
 ├─ src/
-│  ├─ main.tsx                  ViteReactSSG 엔트리
-│  ├─ routes.tsx                RouteRecord[] — 라우트 트리의 유일한 정의처
+│  ├─ root.tsx                  문서 셸(<html>/<head>/<body>) + pre-paint 테마 스크립트
+│  ├─ routes.ts                 @react-router/dev/routes — 라우트 트리의 유일한 정의처
 │  ├─ content/                  ← 콘텐츠 로딩·검증·가공 (순수 함수 계층)
 │  │  ├─ schema.ts              zod 스키마 3개 + 파생 타입
 │  │  ├─ profile.ts             profile.yaml 로드 + 검증
@@ -160,7 +167,6 @@ byron1st.github.io/
 │  │  ├─ MarkerList.tsx         마커(— 또는 ·) + 텍스트 그리드 리스트
 │  │  ├─ SocialLinks.tsx        profile.socials → 아이콘 행
 │  │  ├─ PostBody.tsx           마크다운 HTML 렌더러
-│  │  ├─ Seo.tsx                <Head> 래퍼 (title/description/og/canonical)
 │  │  └─ icons/                 GitHub · X · LinkedIn · Mail · Sun · Moon
 │  ├─ pages/                    ← 라우트별 화면 (콘텐츠 조립만)
 │  │  ├─ Home.tsx
@@ -172,6 +178,7 @@ byron1st.github.io/
 │  │  └─ useTheme.ts            data-theme 읽기/쓰기 + localStorage 동기화
 │  ├─ lib/
 │  │  ├─ date.ts                "Jun 14" / "2026-04-02" 포맷터
+│  │  ├─ seo.ts                 meta descriptor 빌더 (title/description/og/canonical)
 │  │  └─ site.ts                SITE_URL, SITE_TITLE 등 상수
 │  └─ styles/
 │     ├─ theme.css              CSS 변수 + @theme inline + @custom-variant dark
@@ -179,8 +186,8 @@ byron1st.github.io/
 │     └─ post-body.css          .post-body 스코프 규칙 (마크다운 산출 HTML용)
 ├─ e2e/
 │  └─ smoke.spec.ts
-├─ index.html                   pre-paint 테마 스크립트 포함
-├─ vite.config.ts
+├─ react-router.config.ts       appDirectory · buildDirectory · ssr:false · prerender · buildEnd
+├─ vite.config.ts               reactRouter() · tailwindcss() · yaml() · markdown()
 ├─ playwright.config.ts
 ├─ eslint.config.ts             flat config — lint + format의 유일한 진입점
 ├─ .prettierrc.json             포맷 규칙 (eslint-plugin-prettier가 읽음)
@@ -204,7 +211,7 @@ lib/           날짜 포맷 등 의존성 없는 순수 유틸.
 
 - `content/`가 React를 모르므로 그대로 Vitest에서 테스트된다. **테스트 가능한 로직은 전부 이 계층에 있다.**
 - `pages/`는 서로를 import 하지 않는다. 공유가 필요하면 `components/`로 올린다.
-- 라우트 정의는 `routes.tsx` 한 곳에만 존재한다. 페이지 컴포넌트는 자기 경로를 모른다.
+- 라우트 정의는 `routes.ts` 한 곳에만 존재한다. 페이지 컴포넌트는 자기 경로를 모른다.
 
 ---
 
@@ -412,7 +419,7 @@ Public Sans에 한글 글리프가 없으므로 한글은 자연스럽게 Preten
 - Output: `<html data-theme="light|dark">`
 - Business rules:
   - 초기 결정 순서: `localStorage` 저장값 → 없으면 `prefers-color-scheme` → 없으면 `light`.
-  - 이 결정은 `index.html`의 **인라인 스크립트**가 첫 페인트 전에 수행한다. 번들에 의존하면 화면이 번쩍인다.
+  - 이 결정은 `src/root.tsx`의 `<head>`에 놓인 **인라인 스크립트**가 첫 페인트 전에 수행한다. 번들에 의존하면 화면이 번쩍인다. framework mode에는 `index.html`이 없으므로 `<script dangerouslySetInnerHTML>`로 삽입한다.
   - 토글 시 `data-theme` 갱신 + `localStorage` 저장.
   - 아이콘: light일 때 달, dark일 때 해. **`dark:` 유틸리티로 CSS만으로 전환한다** (`className="block dark:hidden"` / `"hidden dark:block"`). JS 상태로 분기하면 프리렌더 HTML과 hydration 결과가 어긋난다.
 - Edge cases:
@@ -485,7 +492,7 @@ Public Sans에 한글 글리프가 없으므로 한글은 자연스럽게 Preten
   - 제목 `<h1> text-2xl font-semibold tracking-tight max-w-md`
   - 날짜 `text-xs text-faint`, ISO 포맷(`2026-04-02`). **태그를 표시하지 않는다.**
   - 본문 컨테이너 `.post-body max-w-prose`
-  - `getStaticPaths`가 draft가 아닌 전 포스트의 경로를 반환해 각각 `dist/posts/{slug}/index.html`로 생성된다.
+  - `react-router.config.ts`의 `prerender()`가 `getStaticPaths()`(정적 라우트 전부) + draft가 아닌 전 포스트의 `/posts/{slug}`를 반환해 각각 `dist/client/posts/{slug}/index.html`로 생성된다.
 - Edge cases:
   - 본문이 비어 있는 포스트는 빌드 시 에러로 처리한다.
 
@@ -527,14 +534,15 @@ Public Sans에 한글 글리프가 없으므로 한글은 자연스럽게 Preten
 ### FR-8: SEO 메타 / 피드 / 사이트맵
 
 - Input: 라우트별 데이터, 프리렌더 경로 목록
-- Output: `<head>` 태그, `dist/rss.xml`, `dist/sitemap.xml`, `dist/robots.txt`
+- Output: `<head>` 태그, `dist/client/rss.xml`, `dist/client/sitemap.xml`, `dist/client/robots.txt`
 - Business rules:
-  - `Seo` 컴포넌트가 `vite-react-ssg`의 `<Head>`를 감싸 `title`, `description`, `og:title`, `og:description`, `og:type`, `og:url`, `twitter:card`, `<link rel="canonical">`을 렌더한다.
+  - 각 라우트 모듈의 **`meta` export**가 `title`, `description`, `og:title`, `og:description`, `og:type`, `og:url`, `twitter:card`를 반환하고, canonical은 같은 배열에 `{ tagName: "link", rel: "canonical", href }` descriptor로 넣는다. `src/root.tsx`의 `<Meta />`가 이들을 `<head>`에 렌더한다.
+  - 반복되는 descriptor 조립은 `src/lib/seo.ts`의 순수 빌더 함수 하나로 모은다 — 컴포넌트가 아니다. `meta`는 React 밖에서 실행되므로 JSX로 만들 수 없다.
   - 제목 규칙: 홈은 `{name}`, 그 외는 `{페이지 제목} — {name}`.
   - `og:image`는 넣지 않는다(디자인에 이미지 에셋이 없다).
-  - `ssgOptions.onFinished(dir)`에서 `scripts/feeds.ts`를 호출해 세 파일을 생성한다. 포스트 메타를 재사용하므로 목록의 단일 출처가 유지된다.
+  - `react-router.config.ts`의 `buildEnd()`에서 `scripts/feeds.ts`를 호출해 세 파일을 생성한다. 포스트 메타를 재사용하므로 목록의 단일 출처가 유지된다. 출력 경로는 `reactRouterConfig.buildDirectory`에서 얻는다.
   - RSS는 최신 20건, `<description>`에 `summary`를 넣는다(본문 전문은 넣지 않는다).
-  - sitemap은 프리렌더된 전 경로를 포함한다 — `getStaticPaths`와 **같은 소스**에서 생성해 누락이 구조적으로 불가능하게 한다.
+  - sitemap은 프리렌더된 전 경로를 포함한다 — `prerender()`와 **같은 소스**에서 생성해 누락이 구조적으로 불가능하게 한다.
 - Edge cases:
   - draft 포스트는 세 산출물 모두에서 제외된다.
 
@@ -545,9 +553,9 @@ Public Sans에 한글 글리프가 없으므로 한글은 자연스럽게 Preten
 - Business rules:
   - `ci.yml` — PR과 push에서 `typecheck` → `lint` → `test`(Vitest) → `e2e`(Playwright) 실행. `lint`가 Prettier 포맷 검사를 겸한다(별도 format 스텝 없음).
   - 두 워크플로 모두 `setup-node`의 `node-version: 24`로 런타임을 고정한다 — 로컬(24.18.0)과 CI가 같은 메이저를 쓴다.
-  - `deploy.yml` — `main` push에서 build 후 `dist/`를 `actions/upload-pages-artifact`로 올리고 `actions/deploy-pages`로 배포.
+  - `deploy.yml` — `main` push에서 build 후 **`dist/client/`** 를 `actions/upload-pages-artifact`로 올리고 `actions/deploy-pages`로 배포. `dist/` 전체를 올리면 서버 빌드 산출물까지 배포되므로 반드시 `client` 하위를 지정한다.
   - 권한: `contents: read`, `pages: write`, `id-token: write`. `concurrency: { group: pages, cancel-in-progress: false }`.
-  - user site이므로 Vite `base`는 기본값 `/`를 그대로 둔다.
+  - user site이므로 React Router `basename`과 Vite `base` 모두 기본값 `/`를 그대로 둔다.
 - Edge cases:
   - GitHub Pages 소스는 저장소 설정에서 "GitHub Actions"로 지정해야 한다(브랜치 배포 아님). 최초 1회 수동 설정.
 
@@ -567,13 +575,14 @@ Public Sans에 한글 글리프가 없으므로 한글은 자연스럽게 Preten
 ### Structural design (최우선)
 
 - 의존 방향이 `pages → components → content → lib` 단방향이며 역방향 import가 없다.
-- **단일 출처**: 라우트는 `routes.tsx`, 스키마는 `schema.ts`, 색·크기는 `theme.css`, 포스트 목록은 `posts.ts`. 같은 사실이 두 곳에 적히지 않는다.
-- 새 "about me" 페이지(예: `/music`) 추가 비용이 **콘텐츠 파일 1개 + 스키마 1개 + 페이지 1개 + 라우트 1줄 + 네비 1줄**이어야 한다. 그 이상이면 구조가 잘못된 것이다.
+- **단일 출처**: 라우트는 `routes.ts`, 스키마는 `schema.ts`, 색·크기는 `theme.css`, 포스트 목록은 `posts.ts`. 같은 사실이 두 곳에 적히지 않는다.
+- 새 "about me" 페이지(예: `/music`) 추가 비용이 **콘텐츠 파일 1개 + 스키마 1개 + 페이지 1개 + 라우트 1줄 + 네비 1줄**이어야 한다. 그 이상이면 구조가 잘못된 것이다. `prerender`가 `getStaticPaths()`를 그대로 펼치므로 정적 라우트는 프리렌더 목록에 손으로 추가할 필요가 없다.
 - `content/`는 React를 import 하지 않는다 — 이 계층이 UI와 분리되어 있다는 것이 컴파일러로 강제된다.
 
 ### Performance
 
 - 목표: 홈 기준 초기 HTML < 15KB, JS < 60KB (gzip). 이미지·폰트 제외.
+- **이 예산은 미검증이다.** React Router framework mode의 런타임(라우터 + 데이터 레이어 + hydration)은 `vite-react-ssg`의 최소 구성보다 무겁다. 첫 빌드 직후 실측하고, 60KB를 넘으면 예산을 조정하거나 `ssr: false` SPA 폴백 경로를 줄이는 쪽으로 대응한다 — 이 수치 때문에 SSG 선택을 되돌리지는 않는다.
 - 포스트 본문은 lazy chunk — 인덱스 페이지가 본문을 받지 않는다.
 - 폰트는 self-host + `font-display: swap`, Pretendard는 한글 `unicode-range`로 제한.
 - 테마 결정이 첫 페인트 전에 끝나 FOUC가 없다.
@@ -613,7 +622,7 @@ GitHub Pages CDN에 위임한다. 자체 가용성 목표를 두지 않는다.
 
 - **정적 호스팅 전용.** 서버 사이드 실행이 불가능하다. 런타임 API·DB·환경변수 시크릿이 존재할 수 없다.
 - **저장소는 `byron1st.github.io`** (user site). 따라서 base path는 `/`이며 프로젝트 사이트용 경로 접두사 처리가 필요 없다.
-- **배포 산출물은 `./dist` 디렉터리 업로드 방식.** `gh-pages` 브랜치 커밋 방식을 쓰지 않는다.
+- **배포 산출물은 `./dist/client` 디렉터리 업로드 방식.** `gh-pages` 브랜치 커밋 방식을 쓰지 않는다.
 - **커밋 신원은 `Hwi Ahn <byron1st@icloud.com>`** (personal 저장소).
 - **arbitrary value 금지** — 위 "스타일링" 컨벤션 참조. 이것은 스타일 취향이 아니라 이 프로젝트의 하드 룰이다.
 - **단일 언어(영어 UI / 한국어 포스트).** 언어 토글·로케일 라우팅을 만들지 않는다.
@@ -628,26 +637,30 @@ GitHub Pages CDN에 위임한다. 자체 가용성 목표를 두지 않는다.
 ### 런타임 (번들에 포함)
 
 - `react`, `react-dom` — 19.x
-- `react-router` — `vite-react-ssg`가 요구하는 버전에 맞춤
-- `vite-react-ssg` — SSG + `<Head>` + `<ClientOnly>`
+- `react-router` — 8.x. v7에서 `react-router-dom`이 이 패키지로 합쳐졌으므로 **`react-router-dom`을 설치하지 않는다**(7.18.2에서 동결됨).
 
 ### 빌드 타임
 
-- `vite` — 8.x, `@vitejs/plugin-react` — 6.x (Vite 8 필수)
+- `vite` — 8.x
+- `@react-router/dev` — 8.x. `reactRouter()` Vite plugin + `react-router build/dev/typegen` CLI. Babel React 변환과 react-refresh, `@react-router/node`를 자체 의존성으로 포함하므로 **`@vitejs/plugin-react`를 따로 설치하지 않는다.**
 - `tailwindcss`, `@tailwindcss/vite` — v4
 - `zod` — 콘텐츠 스키마
-- `js-yaml` 또는 `@rollup/plugin-yaml` — YAML 파싱
+- `@rollup/plugin-yaml` — YAML 파싱
 - `gray-matter` — frontmatter 분리
 - `unified`, `remark-parse`, `remark-gfm`, `remark-rehype`, `rehype-stringify` — Markdown → HTML
 - `@fontsource/public-sans`, `@fontsource/jetbrains-mono`, `pretendard` — self-host 폰트
 
 ### 개발
 
-- `typescript`, `vitest`, `@playwright/test`
+- `typescript` — **`~6.0.3`으로 고정**. 아래 제약 참조.
+- `vitest`, `@vitest/coverage-v8`, `@playwright/test`
 - `eslint` — 10.x, `@eslint/js`, `typescript-eslint` — 8.x(ESLint 10 peer 지원), `eslint-plugin-react-hooks`
 - `prettier` — 3.x, `eslint-config-prettier`, `eslint-plugin-prettier` — Prettier를 ESLint 규칙으로 실행
+- `jiti` — `eslint.config.ts`(TS flat config) 로딩에 필요
 
-> 버전 확인(2026-07-29): `vite@8.1.5` · `eslint@10.8.0` · `typescript-eslint@8.65.0` · `prettier@3.9.6`. `vite-react-ssg@0.9.2`와 `@tailwindcss/vite@4.3.3` 모두 `vite: ^8` peer를 선언하므로 Vite 8과 호환된다.
+> **TypeScript 버전 제약(2026-07-29).** `typescript`의 `latest`는 7.0.2(네이티브 포트)지만 `typescript-eslint@8.65.0`은 canary를 포함해 `typescript: >=4.8.4 <6.1.0`을 선언한다. typescript-eslint 없이는 ESLint가 `.ts`/`.tsx`를 파싱조차 못 하므로 "lint = format 단일 파이프라인" 전제가 무너진다. 따라서 **양쪽을 모두 만족하는 최신 정식 버전인 6.0.3을 쓰고, 6.1 이상으로 자동 상승하지 않도록 `~6.0.3`으로 고정한다.** typescript-eslint가 TS 7을 지원하면 재검토한다. `@react-router/dev`는 `^5.1.0 || ^6.0.0 || ^7.0.0`이라 제약 요인이 아니다.
+
+> 버전 확인(2026-07-29): `react@19.2.8` · `react-router@8.3.0` · `@react-router/dev@8.3.0` · `vite@8.1.5` · `tailwindcss@4.3.3` · `zod@4.4.3` · `typescript@6.0.3` · `vitest@4.1.10` · `eslint@10.8.0` · `typescript-eslint@8.65.0` · `prettier@3.9.6`. `@react-router/dev`는 `vite: ^7 || ^8`, `@tailwindcss/vite`는 `vite: ^5.2 || ^6 || ^7 || ^8` peer를 선언하므로 Vite 8과 호환된다.
 
 ### 외부 서비스
 
@@ -662,7 +675,7 @@ GitHub Pages CDN에 위임한다. 자체 가용성 목표를 두지 않는다.
 
 1. **실제 콘텐츠.** 핸드오프의 이력·프로젝트·포스트는 전부 가짜다. `content/*.yaml`을 채울 실제 이력서·프로젝트 목록·소셜 핸들(GitHub/X/LinkedIn/이메일 주소)이 필요하다. 스키마 확정 전에 실제 데이터를 한 번 보는 편이 안전하다 — 예를 들어 "Books & courses" 같은 섹션이 실제로 존재하지 않으면 스키마에서 빼야 한다. **→ 결정(2026-07-29):** 저자가 Google Docs 이력서를 제공 예정. 그 이력서를 기준으로 `content/*.yaml`을 채우고 실제 섹션 구성에 맞춰 스키마를 확정한다.
 2. **포스트 `summary` 필드.** OG description과 RSS에 필요해 필수 필드로 잡았다. 매 포스트마다 쓰는 게 번거로우면 본문 첫 문단에서 자동 추출하는 방식으로 바꿀 수 있다. **→ 결정(2026-07-29):** 필수 필드로 유지. 저자가 매 포스트마다 직접 작성한다(자동 추출 미도입).
-3. **`vite-react-ssg`의 route `loader` 동작 확인.** 포스트 본문을 lazy chunk + `loader`로 가져오는 설계인데, 프리렌더 중 loader 데이터 직렬화가 기대대로 되는지 구현 초기에 스파이크로 검증한다. 문제가 있으면 본문을 eager glob으로 전환한다(포스트 수가 적어 비용은 작다). **→ 결정(2026-07-29):** 계획대로 진행. 구현 초기 스파이크로 검증하고 문제 시 eager glob으로 전환.
+3. ~~**`vite-react-ssg`의 route `loader` 동작 확인.**~~ **→ 해소(2026-07-29):** SSG를 React Router 8 framework mode로 교체하면서 사라진 질문이다. React Router의 프리렌더는 라우트별 `loader` 결과를 `.data` 파일로 직렬화하는 것이 문서화된 1급 동작이므로 스파이크가 필요 없다.
 4. **`.post-body` 스코프 CSS.** 마크다운 산출 HTML에 클래스를 붙일 수 없어 유일하게 컴포넌트 밖에 스타일이 존재하는 지점이다. 대안은 `rehype`가 hast(JSON)를 내보내게 하고 `PostBody`가 노드 → React 컴포넌트로 매핑하는 것 — 스타일이 100% 컴포넌트로 통일되지만 코드가 ~50줄 늘어난다. 현재는 단순함을 택했다. **→ 결정(2026-07-29):** 현재 선택(스코프 CSS) 유지. hast→React 매핑 대안 미채택.
 5. **GitHub Actions 액션 버전.** `actions/checkout`, `setup-node`, `configure-pages`, `upload-pages-artifact`, `deploy-pages`의 메이저 버전은 구현 시점에 최신 안정판을 확인한다. **→ 결정(2026-07-29):** 구현 시점 최신 안정 메이저 버전 사용.
 6. **커스텀 도메인.** 현재 범위 밖(`byron1st.github.io` 직접 사용). 나중에 붙이면 `public/CNAME` 추가 + `lib/site.ts`의 `SITE_URL` 변경 + DNS 설정이면 되고, canonical/sitemap/RSS가 그 상수를 참조하므로 한 곳만 고치면 된다. **→ 결정(2026-07-29):** 현재 범위 밖. 저자가 추후 직접 셋업한다 — 구현에서 다루지 않는다.
