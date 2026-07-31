@@ -14,7 +14,7 @@ export default defineConfig(
     "blob-report/**",
     ".react-router/**",
     "pnpm-lock.yaml",
-    "docs/design_handoff_personal_site/**",
+    "docs/**",
     // plain Node ESM preview server; no @types/node in this repo
     "scripts/serveClient.mjs",
   ]),

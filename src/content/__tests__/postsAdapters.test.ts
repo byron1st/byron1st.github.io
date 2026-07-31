@@ -232,7 +232,10 @@ describe("markdown plugin transform", () => {
   });
 
   it("ignores markdown outside content/posts", async () => {
-    const result = await transformMarkdown("# docs\n", "/repo/docs/SPEC.md");
+    const result = await transformMarkdown(
+      "# notes\n",
+      "/repo/notes/readme.md",
+    );
     expect(result).toBeNull();
   });
 

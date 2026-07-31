@@ -44,7 +44,7 @@ export function markdown(): Plugin {
       if (!filePath.endsWith(".md")) {
         return null;
       }
-      // Only site content posts — ignore docs/**/*.md and other markdown.
+      // Only site content posts — ignore any other markdown in the repo.
       if (!filePath.includes("/content/posts/")) {
         return null;
       }

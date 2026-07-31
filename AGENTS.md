@@ -57,8 +57,7 @@ There is no separate format-check step: `pnpm lint` is the format check, because
 - **Naming**: components and their files are `PascalCase`, hooks are `useXxx`, everything else `camelCase`. `content/` functions start with a verb (`loadPostBody`). Boolean props are affirmative (`hasBorder`, never `noBorder`).
 - Aim to keep a component file under 100 lines; exceeding it is a signal to extract a visual pattern.
 - Comments explain **why** only — design intent, not what the code does.
-
-See [docs/SPEC.md](docs/SPEC.md) for the full design token table, which is the reference for any pixel-level decision.
+- Pixel-level color and type decisions live in `src/styles/theme.css` (`@theme inline` tokens).
 
 ## Testing
 
@@ -78,13 +77,7 @@ See [docs/SPEC.md](docs/SPEC.md) for the full design token table, which is the r
 - **NEVER write a runtime fallback such as `post?.title ?? "Untitled"`.** Validate at build time and `throw` with the offending file path in the message.
 - **NEVER duplicate `date` or `slug` into post frontmatter.** The filename `YYYY-MM-DD-{slug}.md` is their only source.
 - **NEVER require a `src/` change in order to edit content.** If content editing needs code changes, the schema design is wrong — fix the schema.
-- **NEVER add i18n, a locale router or a language toggle.** The site is single-language: English UI, Korean posts.
+- **NEVER add i18n, a locale router or a language toggle.** The site is single-language (Korean).
 - **NEVER deploy via a `gh-pages` branch commit.** Deployment uploads `./dist/client` through `actions/upload-pages-artifact` — uploading `./dist` would ship the server build too.
 - **NEVER install `react-router-dom` or `@vitejs/plugin-react`.** `react-router` absorbed the former at v7; `@react-router/dev` supplies the React transform itself.
 - **NEVER raise `typescript` above `6.0.x`.** `typescript-eslint` peers at `<6.1.0`, and without it ESLint cannot parse `.ts`/`.tsx` at all. Revisit only when typescript-eslint ships TypeScript 7 support.
-- **NEVER deploy while `content/` still holds the design handoff's placeholder data.** Replace it with the author's real CV and projects first.
-
-## References
-
-- [docs/SPEC.md](docs/SPEC.md) — full specification: architecture, design tokens, functional requirements, constraints.
-- [docs/design_handoff_personal_site/](docs/design_handoff_personal_site/) — design handoff (README + prototype). Its numeric values are normalized to the Tailwind scale by the token table in SPEC.md; its content is placeholder data.
