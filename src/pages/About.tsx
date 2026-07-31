@@ -47,26 +47,68 @@ export default function About() {
 
       <section className="flex flex-col gap-6.5">
         <SectionLabel hasBorder>Experience</SectionLabel>
-        {about.experience.map(({ company, role, period, bullets }) => (
-          <div key={`${company}-${period}`} className="flex flex-col gap-2">
-            <TitleMetaRow
-              title={<span className="font-semibold">{company}</span>}
-              meta={
-                <span className="text-xs text-faint whitespace-nowrap">
-                  {period}
-                </span>
-              }
-            />
-            <p className="text-sm text-muted">{role}</p>
-            {bullets.length > 0 ? (
-              <MarkerList
-                items={bullets}
-                marker="—"
-                className="flex flex-col gap-1 pt-1"
-              />
-            ) : null}
-          </div>
-        ))}
+        {about.experience.map(({ company, period, roles }) => {
+          const single = roles.length === 1 ? roles[0] : null;
+          const companyPeriod = single?.period ?? period;
+          return (
+            <div
+              key={`${company}-${companyPeriod ?? ""}`}
+              className="flex flex-col gap-3"
+            >
+              {companyPeriod ? (
+                <TitleMetaRow
+                  title={<span className="font-semibold">{company}</span>}
+                  meta={
+                    <span className="text-xs text-faint whitespace-nowrap">
+                      {companyPeriod}
+                    </span>
+                  }
+                />
+              ) : (
+                <p className="font-semibold">{company}</p>
+              )}
+              {single ? (
+                <div className="flex flex-col gap-2">
+                  <p className="text-sm text-muted">{single.role}</p>
+                  {single.bullets.length > 0 ? (
+                    <MarkerList
+                      items={single.bullets}
+                      marker="—"
+                      className="flex flex-col gap-1 pt-1"
+                    />
+                  ) : null}
+                </div>
+              ) : (
+                <div className="flex flex-col gap-4">
+                  {roles.map(({ role, period: rolePeriod, bullets }) => (
+                    <div
+                      key={`${role}-${rolePeriod}`}
+                      className="flex flex-col gap-2"
+                    >
+                      <TitleMetaRow
+                        title={
+                          <span className="text-sm text-muted">{role}</span>
+                        }
+                        meta={
+                          <span className="text-xs text-faint whitespace-nowrap">
+                            {rolePeriod}
+                          </span>
+                        }
+                      />
+                      {bullets.length > 0 ? (
+                        <MarkerList
+                          items={bullets}
+                          marker="—"
+                          className="flex flex-col gap-1 pt-1"
+                        />
+                      ) : null}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        })}
       </section>
 
       <section className="flex flex-col gap-6.5">

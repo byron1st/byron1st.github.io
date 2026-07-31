@@ -18,11 +18,19 @@ export const stackGroupSchema = z.object({
   items: z.array(z.string().min(1)),
 });
 
-export const experienceEntrySchema = z.object({
-  company: z.string().min(1),
+export const experienceRoleSchema = z.object({
   role: z.string().min(1),
   period: z.string().min(1),
   bullets: z.array(z.string().min(1)),
+});
+
+// One company entry can hold multiple roles (e.g. internal transfers).
+// Optional `period` is the overall tenure shown on the company header when
+// there are multiple roles; single-role entries use the role's own period.
+export const experienceEntrySchema = z.object({
+  company: z.string().min(1),
+  period: z.string().min(1).optional(),
+  roles: z.array(experienceRoleSchema).min(1),
 });
 
 export const educationEntrySchema = z.object({
@@ -67,6 +75,7 @@ export type SocialKind = z.infer<typeof socialKindSchema>;
 export type Social = z.infer<typeof socialSchema>;
 export type Profile = z.infer<typeof profileSchema>;
 export type StackGroup = z.infer<typeof stackGroupSchema>;
+export type ExperienceRole = z.infer<typeof experienceRoleSchema>;
 export type ExperienceEntry = z.infer<typeof experienceEntrySchema>;
 export type EducationEntry = z.infer<typeof educationEntrySchema>;
 export type WorkEntry = z.infer<typeof workEntrySchema>;

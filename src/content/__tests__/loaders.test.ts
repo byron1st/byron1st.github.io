@@ -26,10 +26,19 @@ describe("content loaders", () => {
     expect(about.stack.length).toBeGreaterThan(0);
     expect(about.experience.length).toBeGreaterThan(0);
     for (const entry of about.experience) {
-      expect(entry.bullets.length).toBeGreaterThan(0);
-      expect(entry.role.length).toBeGreaterThan(0);
       expect(entry.company.length).toBeGreaterThan(0);
+      expect(entry.roles.length).toBeGreaterThan(0);
+      for (const role of entry.roles) {
+        expect(role.role.length).toBeGreaterThan(0);
+        expect(role.period.length).toBeGreaterThan(0);
+        expect(role.bullets.length).toBeGreaterThan(0);
+      }
     }
+    // 포티투닷 has two roles under one company entry (internal transfer).
+    const fortyTwoDot = about.experience.find(
+      (e) => e.company === "포티투닷(주)",
+    );
+    expect(fortyTwoDot?.roles.length).toBeGreaterThanOrEqual(2);
     expect(about.education.length).toBeGreaterThan(0);
 
     // Bachelor entry (last) has no optional blocks — About skips empty containers.

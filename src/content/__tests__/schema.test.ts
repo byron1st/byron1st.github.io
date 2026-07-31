@@ -23,9 +23,13 @@ const validAbout = {
   experience: [
     {
       company: "42dot",
-      role: "Sr. Security Engineer",
-      period: "2024.01 — present",
-      bullets: ["Built a security platform."],
+      roles: [
+        {
+          role: "Sr. Security Engineer",
+          period: "2024.01 — present",
+          bullets: ["Built a security platform."],
+        },
+      ],
     },
   ],
   education: [bachelorEntry],
@@ -178,12 +182,47 @@ describe("aboutSchema", () => {
       experience: [
         {
           company: "42dot",
-          period: "2024 — present",
-          bullets: [],
         },
       ],
     });
     expect(result.success).toBe(false);
+  });
+
+  it("rejects experience with an empty roles array", () => {
+    const result = aboutSchema.safeParse({
+      ...validAbout,
+      experience: [{ company: "42dot", roles: [] }],
+    });
+    expect(result.success).toBe(false);
+  });
+
+  it("accepts a company with multiple roles and optional overall period", () => {
+    const result = aboutSchema.safeParse({
+      ...validAbout,
+      experience: [
+        {
+          company: "42dot",
+          period: "2024.01 — present",
+          roles: [
+            {
+              role: "Sr. Security Engineer",
+              period: "2025.07 — present",
+              bullets: ["Built a security platform."],
+            },
+            {
+              role: "Sr. Blockchain Engineer",
+              period: "2024.01 — 2025.07",
+              bullets: ["Built a blockchain PaaS."],
+            },
+          ],
+        },
+      ],
+    });
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.experience[0]?.period).toBe("2024.01 — present");
+      expect(result.data.experience[0]?.roles).toHaveLength(2);
+    }
   });
 
   // About only omits the bullet list container when bullets is []; the entry still renders.
@@ -193,15 +232,19 @@ describe("aboutSchema", () => {
       experience: [
         {
           company: "42dot",
-          role: "Sr. Security Engineer",
-          period: "2024.01 — present",
-          bullets: [],
+          roles: [
+            {
+              role: "Sr. Security Engineer",
+              period: "2024.01 — present",
+              bullets: [],
+            },
+          ],
         },
       ],
     });
     expect(result.success).toBe(true);
     if (result.success) {
-      expect(result.data.experience[0]?.bullets).toEqual([]);
+      expect(result.data.experience[0]?.roles[0]?.bullets).toEqual([]);
     }
   });
 
@@ -251,9 +294,13 @@ describe("aboutSchema", () => {
         experience: [
           {
             company: "42dot",
-            role: "Engineer",
-            period: "2024",
-            bullets: [""],
+            roles: [
+              {
+                role: "Engineer",
+                period: "2024",
+                bullets: [""],
+              },
+            ],
           },
         ],
       }).success,
