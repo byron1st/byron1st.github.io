@@ -1,0 +1,54 @@
+@import "tailwindcss";
+@import "./fonts.css";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+:root {
+  --site-bg: oklch(0.985 0.003 90);
+  --site-fg: oklch(0.24 0.01 90);
+  --site-muted: oklch(0.55 0.012 90);
+  --site-faint: oklch(0.72 0.01 90);
+  --site-line: oklch(0.9 0.006 90);
+  --site-code-bg: oklch(0.955 0.005 90);
+  --site-accent: oklch(0.55 0.13 252);
+}
+
+[data-theme="dark"] {
+  --site-bg: oklch(0.185 0.008 265);
+  --site-fg: oklch(0.92 0.006 265);
+  --site-muted: oklch(0.66 0.012 265);
+  --site-faint: oklch(0.48 0.012 265);
+  --site-line: oklch(0.29 0.01 265);
+  --site-code-bg: oklch(0.225 0.01 265);
+  --site-accent: oklch(0.74 0.11 252);
+}
+
+@theme inline {
+  --color-bg: var(--site-bg);
+  --color-fg: var(--site-fg);
+  --color-muted: var(--site-muted);
+  --color-faint: var(--site-faint);
+  --color-line: var(--site-line);
+  --color-code-bg: var(--site-code-bg);
+  --color-accent: var(--site-accent);
+
+  --font-sans: "Public Sans", "Pretendard", "Helvetica Neue", Helvetica,
+    sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+html {
+  color-scheme: light;
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

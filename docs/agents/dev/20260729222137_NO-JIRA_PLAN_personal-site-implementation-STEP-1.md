@@ -9,6 +9,8 @@ Step: 1
 
 # Step 1: 툴체인 기반
 
+Report: [20260729222137_NO-JIRA_IMPL_personal-site-implementation-STEP-1.md](./20260729222137_NO-JIRA_IMPL_personal-site-implementation-STEP-1.md)
+
 Part of main plan: [20260729222137_NO-JIRA_PLAN_personal-site-implementation.md](./20260729222137_NO-JIRA_PLAN_personal-site-implementation.md)
 
 ## Depends On
@@ -81,10 +83,10 @@ FR-9의 빌드 파이프라인 부분. 나머지 FR은 여기서 세운 기반 �
 
 ## TODOs
 
-- [ ] `pnpm install`로 의존성을 설치하고 lockfile을 만든다 (AC-4)
-- [ ] TypeScript·ESLint·Prettier 설정을 세운다 — strict + `noUncheckedIndexedAccess`, flat config 구성 순서 고정, 설정·테스트 파일까지 타입 정보 범위에 포함 (AC-4)
-- [ ] Vite·React Router·Playwright 설정을 세운다 — `reactRouter()`·`tailwindcss()`·`yaml()` plugin, `appDirectory: "src"`, `buildDirectory: "dist"`, `ssr: false`, `prerender: ["/"]`, Vitest 대상은 `src/content/`·`src/lib/` (AC-1)
-- [ ] `src/root.tsx`·`src/routes.ts`·`src/pages/Home.tsx` 스텁으로 `/` 하나가 프리렌더되는 최소 앱을 만든다 (AC-1)
-- [ ] `src/styles/theme.css`에 SPEC 표의 색 7개와 `@theme inline` 시맨틱 토큰, `@custom-variant dark`, 폰트 스택을 등록한다 (AC-3)
-- [ ] `src/styles/fonts.css`에 Public Sans·Pretendard·JetBrains Mono를 self-host `@font-face`로 정의한다 — weight 400/600, `font-display: swap`, Pretendard는 한글 `unicode-range` 한정 (AC-2)
-- [ ] `*.yaml`·`*.md` 모듈 앰비언트 타입을 선언해 Step 2·3이 곧바로 import 할 수 있게 한다 (AC-4)
+- [x] `pnpm install`로 의존성을 설치하고 lockfile을 만든다 (AC-4)
+- [x] TypeScript·ESLint·Prettier 설정을 세운다 — strict + `noUncheckedIndexedAccess`, flat config 구성 순서 고정, 설정·테스트 파일까지 타입 정보 범위에 포함 (AC-4)
+- [x] Vite·React Router·Playwright 설정을 세운다 — `reactRouter()`·`tailwindcss()`·`yaml()` plugin, `appDirectory: "src"`, `buildDirectory: "dist"`, `ssr: false`, `prerender: ["/"]`, Vitest 대상은 `src/content/`·`src/lib/` (AC-1)
+- [x] `src/root.tsx`·`src/routes.ts`·`src/pages/Home.tsx` 스텁으로 `/` 하나가 프리렌더되는 최소 앱을 만든다 (AC-1)
+- [x] `src/styles/theme.css`에 SPEC 표의 색 7개와 `@theme inline` 시맨틱 토큰, `@custom-variant dark`, 폰트 스택을 등록한다 (AC-3)
+- [x] `src/styles/fonts.css`에 Public Sans·Pretendard·JetBrains Mono를 self-host `@font-face`로 정의한다 — weight 400/600, `font-display: swap`, Pretendard는 한글 `unicode-range` 한정 (AC-2)
+- [x] `*.yaml`·`*.md` 모듈 앰비언트 타입을 선언해 Step 2·3이 곧바로 import 할 수 있게 한다 (AC-4)
