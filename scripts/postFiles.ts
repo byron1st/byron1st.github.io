@@ -1,4 +1,4 @@
-import { readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 import matter from "gray-matter";
@@ -15,6 +15,10 @@ const postsDir = join(import.meta.dirname, "../content/posts");
 
 /** Published posts only, sorted. Same set as `src/content/posts` `posts`. */
 export function readPostFiles(): PostMeta[] {
+  if (!existsSync(postsDir)) {
+    return [];
+  }
+
   const fileNames = readdirSync(postsDir).filter((name) =>
     name.endsWith(".md"),
   );

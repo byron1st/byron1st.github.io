@@ -1,27 +1,33 @@
 import { Link } from "react-router";
 
-import type { Route } from "./+types/PostDetail";
 import { PostBody } from "../components/PostBody";
 import { loadPostBody, posts } from "../content/posts";
+import type { PostMeta } from "../content/postMeta";
 import { formatIsoDate } from "../lib/date";
 import { buildPageMeta } from "../lib/seo";
 
-export async function loader({ params }: Route.LoaderArgs) {
+// Manual types — this module is swapped out of the route tree when there are
+// zero published posts (see routes.ts), so generated `./+types/PostDetail`
+// may not exist during typecheck.
+type LoaderArgs = { params: { slug?: string } };
+type LoaderData = { post: PostMeta; html: string };
+
+export async function loader({ params }: LoaderArgs): Promise<LoaderData> {
   const { slug } = params;
   const post = posts.find((entry) => entry.slug === slug);
-  if (!post) {
+  if (!post || !slug) {
     // Unknown/draft slugs are not prerendered; SPA hits fall to the default error UI.
-    throw new Error(`Post not found for slug "${slug}"`);
+    throw new Error(`Post not found for slug "${slug ?? ""}"`);
   }
   const html = await loadPostBody(slug);
   return { post, html };
 }
 
-export function meta({ loaderData }: Route.MetaArgs) {
-  if (!loaderData) {
+export function meta({ data }: { data?: LoaderData }) {
+  if (!data) {
     return [];
   }
-  const { post } = loaderData;
+  const { post } = data;
   return buildPageMeta({
     title: post.title,
     description: post.summary,
@@ -30,7 +36,7 @@ export function meta({ loaderData }: Route.MetaArgs) {
   });
 }
 
-export default function PostDetail({ loaderData }: Route.ComponentProps) {
+export default function PostDetail({ loaderData }: { loaderData: LoaderData }) {
   const { post, html } = loaderData;
 
   return (

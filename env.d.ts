@@ -7,6 +7,7 @@ interface ImportMeta {
 
 // ponytail: minimal node builtins for scripts/ + plugins; full @types/node if more surface is needed
 declare module "node:fs" {
+  export function existsSync(path: string): boolean;
   export function readdirSync(path: string): string[];
   export function readFileSync(
     path: string,
