@@ -9,6 +9,8 @@ Step: 3
 
 # Step 3: Markdown 파이프라인
 
+Report: [20260729222137_NO-JIRA_IMPL_personal-site-implementation-STEP-3.md](./20260729222137_NO-JIRA_IMPL_personal-site-implementation-STEP-3.md)
+
 Part of main plan: [20260729222137_NO-JIRA_PLAN_personal-site-implementation.md](./20260729222137_NO-JIRA_PLAN_personal-site-implementation.md)
 
 ## Depends On
@@ -104,9 +106,9 @@ readPostFiles(): PostMeta[]              // draft 제외, 정렬 완료 — post
 
 ## TODOs
 
-- [ ] `src/content/postMeta.ts`에 `PostMeta` 타입, frontmatter zod 스키마, `parsePostFilename`·`sortPosts`·`groupPostsByYear`를 순수 함수로 구현한다 (AC-3, AC-4)
-- [ ] `plugins/markdown.ts`로 `.md` → `{ meta, html }` 모듈 변환을 구현한다. 파일명·frontmatter·빈 본문 위반은 파일 경로를 담아 throw (AC-2)
-- [ ] `src/content/posts.ts`에서 메타는 eager glob, 본문은 lazy glob으로 가져와 `posts`와 `loadPostBody(slug)`를 노출한다 — 정렬·필터는 `postMeta.ts`에 위임 (AC-1, AC-4)
-- [ ] `scripts/postFiles.ts`에 `readPostFiles()`를 구현한다 — fs + gray-matter, 정렬·필터는 `postMeta.ts`에 위임 (AC-1, AC-4)
-- [ ] 실제 포스트 1개(한국어, 문단·소제목·코드·인용 포함)와 `draft: true` 포스트 1개를 작성한다 (AC-5)
-- [ ] 파일명 파싱·draft 필터·정렬 3종·frontmatter 스키마의 단위 테스트를 작성한다 (AC-1, AC-2, AC-3)
+- [x] `src/content/postMeta.ts`에 `PostMeta` 타입, frontmatter zod 스키마, `parsePostFilename`·`sortPosts`·`groupPostsByYear`를 순수 함수로 구현한다 (AC-3, AC-4)
+- [x] `plugins/markdown.ts`로 `.md` → `{ meta, html }` 모듈 변환을 구현한다. 파일명·frontmatter·빈 본문 위반은 파일 경로를 담아 throw (AC-2)
+- [x] `src/content/posts.ts`에서 메타는 eager glob, 본문은 lazy glob으로 가져와 `posts`와 `loadPostBody(slug)`를 노출한다 — 정렬·필터는 `postMeta.ts`에 위임 (AC-1, AC-4)
+- [x] `scripts/postFiles.ts`에 `readPostFiles()`를 구현한다 — fs + gray-matter, 정렬·필터는 `postMeta.ts`에 위임 (AC-1, AC-4)
+- [x] 실제 포스트 1개(한국어, 문단·소제목·코드·인용 포함)와 `draft: true` 포스트 1개를 작성한다 (AC-5)
+- [x] 파일명 파싱·draft 필터·정렬 3종·frontmatter 스키마의 단위 테스트를 작성한다 (AC-1, AC-2, AC-3)
