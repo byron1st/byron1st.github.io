@@ -9,6 +9,8 @@ Step: 7
 
 # Step 7: SEO 메타 + 피드
 
+Report: [20260729222137_NO-JIRA_IMPL_personal-site-implementation-STEP-7.md](./20260729222137_NO-JIRA_IMPL_personal-site-implementation-STEP-7.md)
+
 Part of main plan: [20260729222137_NO-JIRA_PLAN_personal-site-implementation.md](./20260729222137_NO-JIRA_PLAN_personal-site-implementation.md)
 
 ## Depends On
@@ -98,9 +100,9 @@ draft 포스트는 세 산출물 모두에서 빠진다 — `readPostFiles()`가
 
 ## TODOs
 
-- [ ] `src/lib/site.ts`에 `SITE_URL`·`SITE_TITLE` 등 사이트 상수를 정의한다 (AC-4)
-- [ ] `src/lib/seo.ts`에 meta descriptor 순수 빌더를 만든다 — canonical은 `tagName: "link"` descriptor, `og:image` 없음 (AC-4, AC-5)
-- [ ] 다섯 라우트에 `meta` export를 붙인다. PostDetail은 loader 데이터의 제목·요약을 사용 (AC-4, AC-5)
-- [ ] `scripts/feeds.ts`에서 `readPostFiles()`를 재사용해 rss·sitemap·robots를 생성하고 `buildEnd()`에서 호출한다. 출력 경로는 `reactRouterConfig.buildDirectory`에서 파생 (AC-1, AC-6, AC-7)
-- [ ] sitemap을 `prerender()`와 같은 소스에서 만들고, 생성 경로 집합이 실제 산출물과 일치함을 확인한다 (AC-2, AC-3)
-- [ ] `seo.ts` 빌더의 단위 테스트를 작성한다 — 홈/하위 페이지 제목 규칙, canonical descriptor 형태 (AC-5)
+- [x] `src/lib/site.ts`에 `SITE_URL`·`SITE_TITLE` 등 사이트 상수를 정의한다 (AC-4)
+- [x] `src/lib/seo.ts`에 meta descriptor 순수 빌더를 만든다 — canonical은 `tagName: "link"` descriptor, `og:image` 없음 (AC-4, AC-5)
+- [x] 다섯 라우트에 `meta` export를 붙인다. PostDetail은 loader 데이터의 제목·요약을 사용 (AC-4, AC-5)
+- [x] `scripts/feeds.ts`에서 `readPostFiles()`를 재사용해 rss·sitemap·robots를 생성하고 `buildEnd()`에서 호출한다. 출력 경로는 `reactRouterConfig.buildDirectory`에서 파생 (AC-1, AC-6, AC-7)
+- [x] sitemap을 `prerender()`와 같은 소스에서 만들고, 생성 경로 집합이 실제 산출물과 일치함을 확인한다 (AC-2, AC-3)
+- [x] `seo.ts` 빌더의 단위 테스트를 작성한다 — 홈/하위 페이지 제목 규칙, canonical descriptor 형태 (AC-5)

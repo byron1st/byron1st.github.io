@@ -12,6 +12,11 @@ declare module "node:fs" {
     path: string,
     options: "utf8" | { encoding: "utf8" },
   ): string;
+  export function writeFileSync(
+    path: string,
+    data: string,
+    options?: "utf8" | { encoding: "utf8" },
+  ): void;
 }
 
 declare module "node:path" {

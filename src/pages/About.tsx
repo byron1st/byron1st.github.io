@@ -2,6 +2,21 @@ import { MarkerList } from "../components/MarkerList";
 import { SectionLabel } from "../components/SectionLabel";
 import { TitleMetaRow } from "../components/TitleMetaRow";
 import { about } from "../content/about";
+import { buildPageMeta } from "../lib/seo";
+
+export function meta() {
+  const description = about.intro[0];
+  if (!description) {
+    throw new Error(
+      "content/about.yaml: intro must have at least one paragraph for meta",
+    );
+  }
+  return buildPageMeta({
+    title: "About",
+    description,
+    path: "/about",
+  });
+}
 
 export default function About() {
   return (

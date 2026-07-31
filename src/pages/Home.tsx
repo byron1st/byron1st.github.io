@@ -1,5 +1,13 @@
 import { SocialLinks } from "../components/SocialLinks";
 import { profile } from "../content/profile";
+import { buildPageMeta } from "../lib/seo";
+
+export function meta() {
+  return buildPageMeta({
+    description: profile.tagline,
+    path: "/",
+  });
+}
 
 export default function Home() {
   return (

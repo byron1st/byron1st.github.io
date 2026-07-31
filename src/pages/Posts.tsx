@@ -5,6 +5,16 @@ import { TitleMetaRow } from "../components/TitleMetaRow";
 import { groupPostsByYear } from "../content/postMeta";
 import { posts } from "../content/posts";
 import { formatShortDate } from "../lib/date";
+import { buildPageMeta } from "../lib/seo";
+import { SITE_TITLE } from "../lib/site";
+
+export function meta() {
+  return buildPageMeta({
+    title: "Posts",
+    description: `Writing by ${SITE_TITLE}.`,
+    path: "/posts",
+  });
+}
 
 export default function Posts() {
   const groups = groupPostsByYear(posts);

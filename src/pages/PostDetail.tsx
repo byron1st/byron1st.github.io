@@ -4,6 +4,7 @@ import type { Route } from "./+types/PostDetail";
 import { PostBody } from "../components/PostBody";
 import { loadPostBody, posts } from "../content/posts";
 import { formatIsoDate } from "../lib/date";
+import { buildPageMeta } from "../lib/seo";
 
 export async function loader({ params }: Route.LoaderArgs) {
   const { slug } = params;
@@ -14,6 +15,19 @@ export async function loader({ params }: Route.LoaderArgs) {
   }
   const html = await loadPostBody(slug);
   return { post, html };
+}
+
+export function meta({ loaderData }: Route.MetaArgs) {
+  if (!loaderData) {
+    return [];
+  }
+  const { post } = loaderData;
+  return buildPageMeta({
+    title: post.title,
+    description: post.summary,
+    path: `/posts/${post.slug}`,
+    ogType: "article",
+  });
 }
 
 export default function PostDetail({ loaderData }: Route.ComponentProps) {

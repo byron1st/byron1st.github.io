@@ -1,14 +1,22 @@
 import type { Config } from "@react-router/dev/config";
 
-import { readPostFiles } from "./scripts/postFiles";
+import { withPostPaths, writeFeeds } from "./scripts/feeds";
+
+// Same path list prerender returns — buildEnd reuses it for sitemap (AC-3).
+let sitePaths: string[] = [];
 
 export default {
   appDirectory: "src",
   buildDirectory: "dist",
   ssr: false,
   prerender({ getStaticPaths }) {
-    const staticPaths = getStaticPaths();
-    const postPaths = readPostFiles().map((post) => `/posts/${post.slug}`);
-    return [...staticPaths, ...postPaths];
+    sitePaths = withPostPaths(getStaticPaths());
+    return sitePaths;
+  },
+  buildEnd({ reactRouterConfig }) {
+    writeFeeds({
+      buildDirectory: reactRouterConfig.buildDirectory,
+      paths: sitePaths,
+    });
   },
 } satisfies Config;

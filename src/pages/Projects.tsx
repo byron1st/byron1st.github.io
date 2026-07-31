@@ -1,6 +1,15 @@
 import { SectionLabel } from "../components/SectionLabel";
 import { TitleMetaRow } from "../components/TitleMetaRow";
 import { projects } from "../content/projects";
+import { buildPageMeta } from "../lib/seo";
+
+export function meta() {
+  return buildPageMeta({
+    title: "Projects",
+    description: projects.intro,
+    path: "/projects",
+  });
+}
 
 export default function Projects() {
   return (
