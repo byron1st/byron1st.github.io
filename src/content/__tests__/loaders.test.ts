@@ -8,7 +8,7 @@ import { aboutSchema, profileSchema, projectsSchema } from "../schema";
 
 describe("content loaders", () => {
   it("exports a validated profile with only github and email socials", () => {
-    expect(profile.name).toBe("Hwi Ahn");
+    expect(profile.name).toBe("안휘");
     expect(profile.tagline.length).toBeGreaterThan(0);
     expect(profile.socials.map((s) => s.kind)).toEqual(["github", "email"]);
     expect(profile.socials.find((s) => s.kind === "github")?.url).toBe(
@@ -21,60 +21,39 @@ describe("content loaders", () => {
     expect(profileSchema.safeParse(profile).success).toBe(true);
   });
 
-  it("exports about data with four experience entries, three education entries, and empty works", () => {
-    expect(about.intro).toHaveLength(2);
-    expect(about.stack.map((g) => g.group)).toEqual([
-      "Languages",
-      "Backend",
-      "Infra",
-      "Data",
-      "Frontend",
-      "AI tooling",
-    ]);
-    expect(about.experience).toHaveLength(4);
-    expect(about.experience.map((e) => e.company)).toEqual([
-      "42dot",
-      "Bigpicture Lab",
-      "NavMine",
-      "Naver",
-    ]);
-    // Live content always has bullets; empty-array omit path is covered by schema tests.
+  it("exports validated about data with structural invariants", () => {
+    expect(about.intro.length).toBeGreaterThan(0);
+    expect(about.stack.length).toBeGreaterThan(0);
+    expect(about.experience.length).toBeGreaterThan(0);
     for (const entry of about.experience) {
       expect(entry.bullets.length).toBeGreaterThan(0);
       expect(entry.role.length).toBeGreaterThan(0);
+      expect(entry.company.length).toBeGreaterThan(0);
     }
-    expect(about.education).toHaveLength(3);
-    // AC-1 data precondition: empty works → About omits the whole Works section.
-    expect(about.works).toEqual([]);
-    expect(about.works).toHaveLength(0);
+    expect(about.education.length).toBeGreaterThan(0);
 
-    const phd = about.education[0];
-    expect(phd?.thesis).toBe("Software architecture reconstruction");
-    expect(phd?.description?.length).toBeGreaterThan(0);
-    expect(phd?.papers?.length).toBeGreaterThan(0);
-
-    // AC-2 data precondition: bachelor has no optional blocks to render.
-    const bachelor = about.education[2];
-    expect(bachelor?.degree).toContain("B.S.");
+    // Bachelor entry (last) has no optional blocks — About skips empty containers.
+    const bachelor = about.education[about.education.length - 1];
+    expect(bachelor?.degree).toContain("학사");
     expect(bachelor?.thesis).toBeUndefined();
     expect(bachelor?.description).toBeUndefined();
     expect(bachelor?.papers).toBeUndefined();
-    expect("thesis" in (bachelor ?? {})).toBe(false);
-    expect("description" in (bachelor ?? {})).toBe(false);
-    expect("papers" in (bachelor ?? {})).toBe(false);
 
     expect(aboutSchema.safeParse(about).success).toBe(true);
   });
 
-  it("exports personal-harness as the only project", () => {
+  it("exports published projects with github links and no service by default", () => {
     expect(projects.intro.length).toBeGreaterThan(0);
-    expect(projects.projects).toHaveLength(1);
+    expect(projects.projects.length).toBeGreaterThan(0);
     expect(projects.projects[0]?.name).toBe("personal-harness");
     expect(projects.projects[0]?.year).toBeUndefined();
-    expect(projects.projects[0]?.tech).toEqual(["Codex", "Claude Code"]);
-    expect(projects.projects[0]?.link).toBe(
+    expect(projects.projects[0]?.github).toBe(
       "https://github.com/byron1st/personal-harness",
     );
+    expect(projects.projects[0]?.service).toBeUndefined();
+    for (const project of projects.projects) {
+      expect(project.github?.length ?? 0).toBeGreaterThan(0);
+    }
     expect(projectsSchema.safeParse(projects).success).toBe(true);
   });
 

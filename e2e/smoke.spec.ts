@@ -9,7 +9,7 @@ const POST_BODY_MARKER = "왜 정적 사이트인가";
 test("nav walks home → about → projects → posts", async ({ page }) => {
   await page.goto("/");
   await expect(
-    page.locator("main").getByRole("heading", { name: "Hwi Ahn" }),
+    page.locator("main").getByRole("heading", { name: "안휘" }),
   ).toBeVisible();
 
   await page
@@ -95,11 +95,11 @@ test("home front page shows name, tagline, and socials only", async ({
 }) => {
   await page.goto("/");
   const main = page.locator("main");
-  await expect(main.getByRole("heading", { name: "Hwi Ahn" })).toBeVisible();
+  await expect(main.getByRole("heading", { name: "안휘" })).toBeVisible();
   await expect(main.getByRole("heading")).toHaveCount(1);
   await expect(
     main.getByText(
-      "Backend and security engineer designing, building, and operating safe high-performance systems.",
+      "안전한 고성능 백엔드 시스템의 설계, 개발, 운영 전반에 전문성을 갖춘 개발자",
     ),
   ).toBeVisible();
   await expect(main.getByRole("link", { name: "github" })).toBeVisible();
@@ -107,10 +107,14 @@ test("home front page shows name, tagline, and socials only", async ({
   await expect(main.getByText("personal-harness")).toHaveCount(0);
   await expect(main.getByText("building-this-site")).toHaveCount(0);
   await expect(main.getByRole("heading", { name: "About" })).toHaveCount(0);
-  await expect(main.getByRole("heading", { name: "Works" })).toHaveCount(0);
+  await expect(
+    main.getByRole("heading", { name: "Articles & Talks" }),
+  ).toHaveCount(0);
 });
 
-test("about page has four sections and omits Works", async ({ page }) => {
+test("about page has four sections and omits Articles & Talks", async ({
+  page,
+}) => {
   await page.goto("/about");
   const main = page.locator("main");
   const sectionHeadings = main.locator("h2");
@@ -121,8 +125,10 @@ test("about page has four sections and omits Works", async ({ page }) => {
     "Experience",
     "Education",
   ]);
-  await expect(main.getByRole("heading", { name: "Works" })).toHaveCount(0);
-  await expect(main.getByText("Works")).toHaveCount(0);
+  await expect(
+    main.getByRole("heading", { name: "Articles & Talks" }),
+  ).toHaveCount(0);
+  await expect(main.getByText("Articles & Talks")).toHaveCount(0);
   await expect(main.getByText("Books")).toHaveCount(0);
 
   await expect(sectionHeadings.nth(0)).not.toHaveClass(/border-b/);
@@ -130,25 +136,23 @@ test("about page has four sections and omits Works", async ({ page }) => {
   await expect(sectionHeadings.nth(2)).toHaveClass(/border-b/);
   await expect(sectionHeadings.nth(3)).toHaveClass(/border-b/);
 
-  await expect(main.getByText("B.S. in Computer Science")).toBeVisible();
-  await expect(
-    main.getByText("Software architecture reconstruction"),
-  ).toBeVisible();
-  await expect(main.getByText("42dot")).toBeVisible();
-  await expect(main.getByText("Languages")).toBeVisible();
+  await expect(main.getByText("학사, 전산학과")).toBeVisible();
+  await expect(main.getByText("소프트웨어 아키텍처 재구축 연구")).toBeVisible();
+  await expect(main.getByText("포티투닷(주)")).toBeVisible();
+  await expect(main.getByText("서버 개발", { exact: true })).toBeVisible();
 });
 
 test("shell is prerendered without JavaScript", async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
   await page.goto("/");
-  await expect(page.getByRole("link", { name: "Hwi Ahn" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "안휘" })).toBeVisible();
   await expect(page.getByRole("navigation").getByText("about")).toBeVisible();
   await expect(
     page.getByRole("navigation").getByText("projects"),
   ).toBeVisible();
   await expect(page.getByRole("navigation").getByText("posts")).toBeVisible();
-  await expect(page.getByText(/© \d{4} Hwi Ahn/)).toBeVisible();
+  await expect(page.getByText(/© \d{4} 안휘/)).toBeVisible();
   await expect(
     page.locator("footer").getByRole("link", { name: "github" }),
   ).toBeVisible();
@@ -156,7 +160,7 @@ test("shell is prerendered without JavaScript", async ({ browser }) => {
     page.locator("footer").getByRole("link", { name: "email" }),
   ).toBeVisible();
   await expect(
-    page.locator("main").getByRole("heading", { name: "Hwi Ahn" }),
+    page.locator("main").getByRole("heading", { name: "안휘" }),
   ).toBeVisible();
   await context.close();
 });
@@ -277,7 +281,7 @@ test("load with light or dark preference produces no page errors", async ({
     });
     await page.goto("/");
     await expect(
-      page.locator("main").getByRole("heading", { name: "Hwi Ahn" }),
+      page.locator("main").getByRole("heading", { name: "안휘" }),
     ).toBeVisible();
     expect(pageErrors).toEqual([]);
     await context.close();

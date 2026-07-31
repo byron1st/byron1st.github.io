@@ -24,10 +24,12 @@ export default function About() {
       <section className="flex flex-col gap-4">
         <SectionLabel>About</SectionLabel>
         {about.intro.map((paragraph) => (
-          <p key={paragraph} className="text-base text-muted max-w-lg">
+          <p key={paragraph} className="text-base text-muted">
             {paragraph}
           </p>
         ))}
+        {/* Stub CTA: clickable, no handler yet */}
+        {/*<Button>Request a resume</Button>*/}
       </section>
 
       <section className="flex flex-col gap-3.5">
@@ -100,7 +102,7 @@ export default function About() {
 
       {about.works.length > 0 ? (
         <section className="flex flex-col gap-4">
-          <SectionLabel hasBorder>Works</SectionLabel>
+          <SectionLabel hasBorder>Articles & Talks</SectionLabel>
           {about.works.map(({ title, year, meta }) => (
             <div key={`${title}-${year}`} className="flex flex-col gap-0.5">
               <TitleMetaRow

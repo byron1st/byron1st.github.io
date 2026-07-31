@@ -283,16 +283,17 @@ describe("aboutSchema", () => {
 });
 
 describe("projectsSchema", () => {
-  it("accepts a project without link and with empty tech", () => {
+  it("accepts a project without github/service and with empty tech", () => {
     const result = projectsSchema.safeParse(validProjects);
     expect(result.success).toBe(true);
     if (result.success) {
-      expect(result.data.projects[0]?.link).toBeUndefined();
+      expect(result.data.projects[0]?.github).toBeUndefined();
+      expect(result.data.projects[0]?.service).toBeUndefined();
       expect(result.data.projects[0]?.tech).toEqual([]);
     }
   });
 
-  it("accepts a project with link and tech", () => {
+  it("accepts a project with github, service, and tech", () => {
     const result = projectsSchema.safeParse({
       intro: "Open-source side projects.",
       projects: [
@@ -301,14 +302,23 @@ describe("projectsSchema", () => {
           year: "2025",
           description: "Personal AI-agent development workflow harness.",
           tech: ["Codex", "Claude Code"],
-          link: "https://github.com/byron1st/personal-harness",
+          github: "https://github.com/byron1st/personal-harness",
+          service: "https://example.com/harness",
         },
       ],
     });
     expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.projects[0]?.github).toBe(
+        "https://github.com/byron1st/personal-harness",
+      );
+      expect(result.data.projects[0]?.service).toBe(
+        "https://example.com/harness",
+      );
+    }
   });
 
-  it("accepts a project that omits optional year, link, and tech", () => {
+  it("accepts a project that omits optional year, github, service, and tech", () => {
     const result = projectsSchema.safeParse({
       intro: "Open-source side projects.",
       projects: [
@@ -321,7 +331,8 @@ describe("projectsSchema", () => {
     expect(result.success).toBe(true);
     if (result.success) {
       expect(result.data.projects[0]?.year).toBeUndefined();
-      expect(result.data.projects[0]?.link).toBeUndefined();
+      expect(result.data.projects[0]?.github).toBeUndefined();
+      expect(result.data.projects[0]?.service).toBeUndefined();
       expect(result.data.projects[0]?.tech).toEqual([]);
     }
   });

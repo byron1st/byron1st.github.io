@@ -54,7 +54,8 @@ export const projectEntrySchema = z.object({
   year: z.string().min(1).optional(),
   description: z.string().min(1),
   tech: z.array(z.string().min(1)).default([]),
-  link: z.string().min(1).optional(),
+  github: z.string().min(1).optional(),
+  service: z.string().min(1).optional(),
 });
 
 export const projectsSchema = z.object({

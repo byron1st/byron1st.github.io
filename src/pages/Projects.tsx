@@ -1,3 +1,5 @@
+import { ExternalLink } from "../components/icons/ExternalLink";
+import { GitHub } from "../components/icons/GitHub";
 import { SectionLabel } from "../components/SectionLabel";
 import { TitleMetaRow } from "../components/TitleMetaRow";
 import { projects } from "../content/projects";
@@ -20,27 +22,44 @@ export default function Projects() {
       </div>
 
       <div>
-        {projects.projects.map(({ name, year, description, tech, link }) => {
-          const title = link ? (
-            <a
-              href={link}
-              target="_blank"
-              rel="noreferrer"
-              className="font-semibold hover:text-accent"
-            >
-              {name}
-            </a>
-          ) : (
-            <span className="font-semibold">{name}</span>
-          );
-
-          return (
+        {projects.projects.map(
+          ({ name, year, description, tech, github, service }) => (
             <article
               key={name}
               className="py-5 border-t border-line flex flex-col gap-1.5"
             >
               <TitleMetaRow
-                title={title}
+                title={
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span className="font-semibold">{name}</span>
+                    {github || service ? (
+                      <span className="flex items-center gap-2 shrink-0">
+                        {github ? (
+                          <a
+                            href={github}
+                            target="_blank"
+                            rel="noreferrer"
+                            aria-label={`${name} GitHub`}
+                            className="text-faint hover:text-fg"
+                          >
+                            <GitHub className="size-4" />
+                          </a>
+                        ) : null}
+                        {service ? (
+                          <a
+                            href={service}
+                            target="_blank"
+                            rel="noreferrer"
+                            aria-label={`${name} service`}
+                            className="text-faint hover:text-fg"
+                          >
+                            <ExternalLink className="size-4" />
+                          </a>
+                        ) : null}
+                      </span>
+                    ) : null}
+                  </div>
+                }
                 meta={
                   year ? (
                     <span className="text-xs text-faint whitespace-nowrap">
@@ -63,8 +82,8 @@ export default function Projects() {
                 </div>
               ) : null}
             </article>
-          );
-        })}
+          ),
+        )}
       </div>
     </div>
   );

@@ -2,4 +2,4 @@
 export const SITE_URL = "https://byron1st.github.io";
 
 /** Author / brand name used in titles and feed channel metadata. */
-export const SITE_TITLE = "Hwi Ahn";
+export const SITE_TITLE = "안휘";
