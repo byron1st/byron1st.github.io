@@ -11,6 +11,8 @@ Step: 4
 
 Part of main plan: [20260729222137_NO-JIRA_PLAN_personal-site-implementation.md](./20260729222137_NO-JIRA_PLAN_personal-site-implementation.md)
 
+Report: [20260729222137_NO-JIRA_IMPL_personal-site-implementation-STEP-4.md](./20260729222137_NO-JIRA_IMPL_personal-site-implementation-STEP-4.md)
+
 ## Depends On
 
 Step 1 (툴체인·토큰·`root.tsx`·`routes.ts`), Step 2 (`profile` 상수와 `socials[].kind` 유니온).
@@ -91,9 +93,9 @@ FR-0 (전역 셸), FR-1 (테마).
 
 ## TODOs
 
-- [ ] 아이콘 컴포넌트(GitHub·X·LinkedIn·Mail·Sun·Moon)를 인라인 SVG로 만든다 — `currentColor` 사용 (AC-1)
-- [ ] `Header`를 구현한다 — 이름 링크 + 네비 3개(보더 항상 존재, 색만 전환) + 테마 토글. 언어 토글·구분선 없음 (AC-6, AC-7)
-- [ ] `Footer`와 `SocialLinks`를 구현한다 — `socials` 배열 순회, `kind` exhaustive 매핑, `aria-label` 부여 (AC-1)
-- [ ] `Layout`으로 헤더·`<Outlet/>`·푸터를 감싸고 콘텐츠 컬럼 치수를 적용한다. `routes.ts`를 layout 중첩 구조로 바꾸고 스크롤 최상단 복원을 건다 (AC-1)
-- [ ] `root.tsx`의 `<head>`에 pre-paint 테마 스크립트를 인라인한다 — `localStorage` → `prefers-color-scheme` → `light`, `try/catch` (AC-2, AC-3)
-- [ ] `useTheme`과 `ThemeToggle`을 구현한다 — SSG 가드, 토글 시 `data-theme` 갱신 + `localStorage` 저장, 아이콘 전환은 `dark:` 유틸리티로만 (AC-4, AC-5)
+- [x] 아이콘 컴포넌트(GitHub·X·LinkedIn·Mail·Sun·Moon)를 인라인 SVG로 만든다 — `currentColor` 사용 (AC-1)
+- [x] `Header`를 구현한다 — 이름 링크 + 네비 3개(보더 항상 존재, 색만 전환) + 테마 토글. 언어 토글·구분선 없음 (AC-6, AC-7)
+- [x] `Footer`와 `SocialLinks`를 구현한다 — `socials` 배열 순회, `kind` exhaustive 매핑, `aria-label` 부여 (AC-1)
+- [x] `Layout`으로 헤더·`<Outlet/>`·푸터를 감싸고 콘텐츠 컬럼 치수를 적용한다. `routes.ts`를 layout 중첩 구조로 바꾸고 스크롤 최상단 복원을 건다 (AC-1)
+- [x] `root.tsx`의 `<head>`에 pre-paint 테마 스크립트를 인라인한다 — `localStorage` → `prefers-color-scheme` → `light`, `try/catch` (AC-2, AC-3)
+- [x] `useTheme`과 `ThemeToggle`을 구현한다 — SSG 가드, 토글 시 `data-theme` 갱신 + `localStorage` 저장, 아이콘 전환은 `dark:` 유틸리티로만 (AC-4, AC-5)
