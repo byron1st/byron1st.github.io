@@ -11,6 +11,8 @@ Step: 5
 
 Part of main plan: [20260729222137_NO-JIRA_PLAN_personal-site-implementation.md](./20260729222137_NO-JIRA_PLAN_personal-site-implementation.md)
 
+Report: [20260729222137_NO-JIRA_IMPL_personal-site-implementation-STEP-5.md](./20260729222137_NO-JIRA_IMPL_personal-site-implementation-STEP-5.md)
+
 ## Depends On
 
 Step 2 (`profile`·`about` 상수와 타입), Step 4 (`Layout`·`routes.ts` 중첩 구조·아이콘). Step 6과 병렬 진행 가능하나 둘 다 `src/routes.ts`를 건드린다.
@@ -99,9 +101,9 @@ Step 1의 홈 스텁을 실제 프론트 페이지로 교체하고, About 페이
 
 ## TODOs
 
-- [ ] `SectionLabel`(`hasBorder`)·`TitleMetaRow`·`MarkerList`를 `components/`에 추출한다 (AC-3)
-- [ ] `pages/Home.tsx`를 스텁에서 실제 프론트 페이지로 교체한다 — 이름·태그라인·소셜 아이콘 행만 (AC-5, AC-6)
-- [ ] `pages/About.tsx`의 Intro·Stack 섹션을 구현하고 `/about` 라우트를 추가한다 (AC-3)
-- [ ] Experience·Education 섹션을 구현한다 — 빈 `bullets`와 학사 엔트리의 선택 필드는 컨테이너째 렌더하지 않는다 (AC-2)
-- [ ] Works 섹션을 구현하되 `works`가 비어 있으면 섹션 전체를 렌더하지 않는다 (AC-1)
-- [ ] 위계 보정(제목 `text-fg`/메타 `text-muted`, 스택 라벨 `text-faint`)을 적용하고 `src/` 전체에서 허용 외 대괄호 표기가 없음을 확인한다 (AC-4)
+- [x] `SectionLabel`(`hasBorder`)·`TitleMetaRow`·`MarkerList`를 `components/`에 추출한다 (AC-3)
+- [x] `pages/Home.tsx`를 스텁에서 실제 프론트 페이지로 교체한다 — 이름·태그라인·소셜 아이콘 행만 (AC-5, AC-6)
+- [x] `pages/About.tsx`의 Intro·Stack 섹션을 구현하고 `/about` 라우트를 추가한다 (AC-3)
+- [x] Experience·Education 섹션을 구현한다 — 빈 `bullets`와 학사 엔트리의 선택 필드는 컨테이너째 렌더하지 않는다 (AC-2)
+- [x] Works 섹션을 구현하되 `works`가 비어 있으면 섹션 전체를 렌더하지 않는다 (AC-1)
+- [x] 위계 보정(제목 `text-fg`/메타 `text-muted`, 스택 라벨 `text-faint`)을 적용하고 `src/` 전체에서 허용 외 대괄호 표기가 없음을 확인한다 (AC-4)

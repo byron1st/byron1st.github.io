@@ -4,5 +4,5 @@ export default {
   appDirectory: "src",
   buildDirectory: "dist",
   ssr: false,
-  prerender: ["/"],
+  prerender: ["/", "/about"],
 } satisfies Config;

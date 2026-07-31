@@ -186,6 +186,52 @@ describe("aboutSchema", () => {
     expect(result.success).toBe(false);
   });
 
+  // About only omits the bullet list container when bullets is []; the entry still renders.
+  it("accepts experience with an empty bullets array", () => {
+    const result = aboutSchema.safeParse({
+      ...validAbout,
+      experience: [
+        {
+          company: "42dot",
+          role: "Sr. Security Engineer",
+          period: "2024.01 — present",
+          bullets: [],
+        },
+      ],
+    });
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.experience[0]?.bullets).toEqual([]);
+    }
+  });
+
+  // Empty papers array is valid data; About still skips the papers MarkerList when length is 0.
+  it("accepts education with an empty papers array", () => {
+    const result = aboutSchema.safeParse({
+      ...validAbout,
+      education: [{ ...bachelorEntry, papers: [] }],
+    });
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.education[0]?.papers).toEqual([]);
+    }
+  });
+
+  it("rejects a works entry missing required fields", () => {
+    expect(
+      aboutSchema.safeParse({
+        ...validAbout,
+        works: [{ title: "Only a title" }],
+      }).success,
+    ).toBe(false);
+    expect(
+      aboutSchema.safeParse({
+        ...validAbout,
+        works: [{ title: "Book", year: "2017", meta: "" }],
+      }).success,
+    ).toBe(false);
+  });
+
   it("rejects empty strings inside nested content arrays", () => {
     expect(
       aboutSchema.safeParse({

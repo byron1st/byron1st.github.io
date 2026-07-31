@@ -38,19 +38,30 @@ describe("content loaders", () => {
       "NavMine",
       "Naver",
     ]);
+    // Live content always has bullets; empty-array omit path is covered by schema tests.
+    for (const entry of about.experience) {
+      expect(entry.bullets.length).toBeGreaterThan(0);
+      expect(entry.role.length).toBeGreaterThan(0);
+    }
     expect(about.education).toHaveLength(3);
+    // AC-1 data precondition: empty works → About omits the whole Works section.
     expect(about.works).toEqual([]);
+    expect(about.works).toHaveLength(0);
 
     const phd = about.education[0];
     expect(phd?.thesis).toBe("Software architecture reconstruction");
     expect(phd?.description?.length).toBeGreaterThan(0);
     expect(phd?.papers?.length).toBeGreaterThan(0);
 
+    // AC-2 data precondition: bachelor has no optional blocks to render.
     const bachelor = about.education[2];
     expect(bachelor?.degree).toContain("B.S.");
     expect(bachelor?.thesis).toBeUndefined();
     expect(bachelor?.description).toBeUndefined();
     expect(bachelor?.papers).toBeUndefined();
+    expect("thesis" in (bachelor ?? {})).toBe(false);
+    expect("description" in (bachelor ?? {})).toBe(false);
+    expect("papers" in (bachelor ?? {})).toBe(false);
 
     expect(aboutSchema.safeParse(about).success).toBe(true);
   });
