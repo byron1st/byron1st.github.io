@@ -15,6 +15,8 @@ export default defineConfig(
     ".react-router/**",
     "pnpm-lock.yaml",
     "docs/design_handoff_personal_site/**",
+    // plain Node ESM preview server; no @types/node in this repo
+    "scripts/serveClient.mjs",
   ]),
   eslint.configs.recommended,
   tseslint.configs.recommendedTypeChecked,

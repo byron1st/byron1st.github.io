@@ -19,7 +19,8 @@ export default defineConfig({
     ...devices["Desktop Chrome"],
   },
   webServer: {
-    command: "pnpm preview --host 127.0.0.1 --port 4173",
+    // scripts/serveClient.mjs: GH Pages directory-index, not vite SPA fallback
+    command: "pnpm preview 4173",
     url: "http://127.0.0.1:4173",
     reuseExistingServer: !isCI,
   },

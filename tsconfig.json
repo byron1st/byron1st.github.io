@@ -9,7 +9,8 @@
     "coverage",
     "test-results",
     "playwright-report",
-    "blob-report"
+    "blob-report",
+    "scripts/serveClient.mjs"
   ],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2022"],

@@ -16,7 +16,7 @@
     "test-e2e": "playwright test",
     "coverage": "vitest run --coverage",
     "build": "react-router build",
-    "preview": "vite preview",
+    "preview": "node scripts/serveClient.mjs",
     "dev": "react-router dev"
   },
   "dependencies": {

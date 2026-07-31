@@ -9,6 +9,8 @@ Step: 8
 
 # Step 8: E2E + CI/CD + 성능 실측
 
+Report: [20260729222137_NO-JIRA_IMPL_personal-site-implementation-STEP-8.md](./20260729222137_NO-JIRA_IMPL_personal-site-implementation-STEP-8.md)
+
 Part of main plan: [20260729222137_NO-JIRA_PLAN_personal-site-implementation.md](./20260729222137_NO-JIRA_PLAN_personal-site-implementation.md)
 
 ## Depends On
@@ -93,8 +95,8 @@ PR과 push에서 `typecheck` → `lint` → `test`(Vitest) → `e2e`(Playwright)
 
 ## TODOs
 
-- [ ] 빌드 산출물의 서빙 방식이 GitHub Pages와 동일한지 확인하고, 필요하면 Playwright `webServer`(또는 `preview` 스크립트)를 그에 맞게 설정한다 (AC-2)
-- [ ] `e2e/smoke.spec.ts`에 네 시나리오를 구현한다 — 네비게이션, `/posts/{slug}` 직접 접속, 테마 유지, JS 비활성 본문 렌더 (AC-1, AC-2, AC-3)
-- [ ] `.github/workflows/ci.yml`을 작성한다 — typecheck → lint → test → e2e, Node 24, 별도 format 스텝 없음 (AC-5)
-- [ ] `.github/workflows/deploy.yml`을 작성한다 — `dist/client` 업로드, 권한 3종, `concurrency`, 액션은 최신 안정 메이저 고정 (AC-4, AC-5)
-- [ ] 홈의 HTML·JS를 gzip 기준으로 실측해 구현 리포트에 기록하고, 예산 초과 시 SPEC 예산 조정 제안을 남긴다 (AC-6)
+- [x] 빌드 산출물의 서빙 방식이 GitHub Pages와 동일한지 확인하고, 필요하면 Playwright `webServer`(또는 `preview` 스크립트)를 그에 맞게 설정한다 (AC-2)
+- [x] `e2e/smoke.spec.ts`에 네 시나리오를 구현한다 — 네비게이션, `/posts/{slug}` 직접 접속, 테마 유지, JS 비활성 본문 렌더 (AC-1, AC-2, AC-3)
+- [x] `.github/workflows/ci.yml`을 작성한다 — typecheck → lint → test → e2e, Node 24, 별도 format 스텝 없음 (AC-5)
+- [x] `.github/workflows/deploy.yml`을 작성한다 — `dist/client` 업로드, 권한 3종, `concurrency`, 액션은 최신 안정 메이저 고정 (AC-4, AC-5)
+- [x] 홈의 HTML·JS를 gzip 기준으로 실측해 구현 리포트에 기록하고, 예산 초과 시 SPEC 예산 조정 제안을 남긴다 (AC-6)
