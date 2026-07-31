@@ -36,3 +36,6 @@ test-results/
 playwright-report/
 blob-report/
 .playwright/
+
+# Local docs (plans, handoff, notes) — not shipped with the site
+docs/
