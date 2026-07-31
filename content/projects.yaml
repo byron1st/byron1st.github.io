@@ -1,0 +1,39 @@
+intro: 개인 오픈소스 작업입니다. 더 공개하는 대로 목록을 늘려 갈 예정입니다.
+projects:
+  - name: personal-harness
+    description: Codex, Claude Code 등 AI coding agent를 위한 개인 개발 워크플로우 지원 하네스. Agent Skills, Hooks, Custom Agents, Global Instructions 로 구성.
+    tech:
+      - Codex
+      - Claude Code
+      - Grok Build
+    github: https://github.com/byron1st/personal-harness
+  - name: git-tag-similarity
+    description: 두 Git tag 들의 유사도를 커밋 히스토리 기반으로 분석해주는 작은 Go CLI 프로그램.
+    tech:
+      - Go
+      - CLI
+    github: https://github.com/byron1st/git-tag-similarity
+  - name: unix-timestamp-copier
+    description: 접속 즉시 unix timestamp 를 복사해주는 작은 웹앱.
+    tech:
+      - Google AI Studio
+    github: https://github.com/byron1st/unix-timestamp-copier
+    service: https://ts.hwia.dev
+  - name: sarex-toolset
+    description: 소프트웨어 아키텍처 재구축 방법 (CBSAR) 지원 툴셋
+    tech:
+      - Rust
+      - CLI
+    github: https://github.com/byron1st/sarex-toolset
+  - name: simple_pbft
+    description: PBFT 합의 알고리즘을 샘플로 일부 구현한 프로그램
+    tech:
+      - Go
+      - Blockchain
+    github: https://github.com/byron1st/simple_pbft
+  - name: JRiExt2
+    description: Java 프로그램의 런타임 아키텍처 추출을 위한 CLI 프로그램
+    tech:
+      - Java
+      - Byte Code Instrumentation
+    github: https://github.com/byron1st/jriext2

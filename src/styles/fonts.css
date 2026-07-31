@@ -1,0 +1,34 @@
+/* Public Sans — latin 400/600 only, self-hosted via @fontsource */
+@import "@fontsource/public-sans/latin-400.css";
+@import "@fontsource/public-sans/latin-600.css";
+
+/* JetBrains Mono — latin 400/600 only, self-hosted via @fontsource */
+@import "@fontsource/jetbrains-mono/latin-400.css";
+@import "@fontsource/jetbrains-mono/latin-600.css";
+
+/*
+ * Pretendard — Hangul range only so Latin falls through to Public Sans.
+ * Bare package paths in url() are treated as relative by lightningcss/Tailwind,
+ * so resolve from this file into node_modules (Vite then hashes into assets/).
+ */
+@font-face {
+  font-family: "Pretendard";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../../node_modules/pretendard/dist/web/static/woff2-subset/Pretendard-Regular.subset.woff2")
+    format("woff2");
+  unicode-range:
+    U+1100-11FF, U+3130-318F, U+A960-A97F, U+AC00-D7A3, U+D7B0-D7FF;
+}
+
+@font-face {
+  font-family: "Pretendard";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../../node_modules/pretendard/dist/web/static/woff2-subset/Pretendard-SemiBold.subset.woff2")
+    format("woff2");
+  unicode-range:
+    U+1100-11FF, U+3130-318F, U+A960-A97F, U+AC00-D7A3, U+D7B0-D7FF;
+}

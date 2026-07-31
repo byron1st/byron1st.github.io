@@ -1,0 +1,108 @@
+intro:
+  - 저는 KAIST 소프트웨어 아키텍처 박사 과정과 10여 년간의 Backend Engineer (Blockchain, Security 도메인) 경험을 바탕으로, 안전한 고성능 백엔드 시스템의 설계, 개발, 운영 전반에 전문성을 갖춘 개발자입니다.
+  - Go와 Node.js를 주력으로 대규모 웹 서비스 백엔드 및 분산 시스템을 구축해 왔으며, 특히 데이터 무결성 및 보안을 핵심 가치로 하는 플랫폼 개발을 담당했습니다. AWS EKS, GCP Cloud Run 기반의 클라우드 네이티브 환경 운영에 익숙하며, 복잡한 시스템이 확장성과 안정성을 갖출 수 있도록 개발을 해왔습니다.
+  - 최근에는 Codex, Claude Code 등에서 사용할 개인 하네스를 만들고 실험하며, AI 네이티브 개발의 생산성과 품질을 높이는 방법을 고민하고 있습니다.
+stack:
+  - group: 서버 개발
+    items:
+      - Go
+      - Node.js
+      - REST
+      - gRPC
+      - JSON-RPC
+  - group: 데이터베이스
+    items:
+      - PostgreSQL
+      - Redis
+      - MongoDB
+      - Firebase
+      - SQLite
+      - BigQuery
+  - group: 블록체인
+    items:
+      - Aptos
+      - Ethereum
+      - Hyperledger Fabric
+  - group: 배포 및 운영
+    items:
+      - AWS
+      - GCP
+      - Docker
+      - EKS
+      - Cloud Run
+      - Vercel
+      - GitLab
+      - GitHub
+      - CI/CD
+  - group: 프론트엔드
+    items:
+      - React
+      - Vite
+      - Next.js
+      - React Native
+experience:
+  - company: 포티투닷(주)
+    role: Sr. Security Engineer, Security Platform Team
+    period: 2025.07 — 현재
+    bullets:
+      - 취약점 (Vulnerability) 데이터베이스 구축 - 외부 데이터 소스들로부터 동기화 서버 개발 (기여도 80%)
+      - KMS (Key Management System) 간 연동 및 관련하여 추상화된 API 서비스 제공 미들웨어 개발 (기여도 100%)
+      - 바이너리 암호화 CI/CD 파이프라인 구축 - CLI, 상태 모니터링 서버, CI/CD Job 개발 (기여도 100%)
+  - company: 포티투닷(주)
+    role: Sr. Blockchain Engineer, Blockchain Platform Team
+    period: 2024.01 — 2025.07
+    bullets:
+      - 프라이빗 블록체인 플랫폼 (PaaS) 구축 - 블록체인 노드 Wrapper, 로드밸런서, 트랜잭션 관리 서버, 모니터링 서버 등 총 25개 이상의 관련 서버들을 개발하고, 스마트컨트랙트들과 연동 SDK 개발 (기여도 80%)
+  - company: 빅픽처랩(주)
+    role: CTO & Fullstack Engineer
+    period: 2018.05 — 2023.12
+    bullets:
+      - 로컬 커뮤니티를 위한 블록체인 기반 익명 인증 커뮤니티 서비스 개발 - 백앤드 서버, React Native 앱, React 웹앱 개발, 개발팀 리드 (기여도 70%)
+      - 인재 평가검증 솔루션 개발 - 백앤드 서버, React 웹앱 개발, 개발팀 리드 (기여도 50%)
+      - (ETRI 용역) DID 인증 및 ERC20/NFT 토큰 기반 개인데이터 거래 시스템의 백앤드 서버 개발 (기여도 100%)
+      - (조폐공사 용역) NFT 신뢰검증 플랫폼 이기종 블록체인 연결 미들웨어 개발 (기여도 100%)
+  - company: 주식회사 네브마인
+    role: 대표 & Software Engineer
+    period: 2016.03 — 2018.05
+    bullets:
+      - 개발자의 코드 추천 및 탐색 도구인 NavMine을 개발 및 판매 (기여도 10%)
+      - ASM 라이브러리를 활용한 Java Bytecode Instrumentation 프로그램 개발 - CLI 및 Electron 기반 GUI 프로그램 개발 (기여도 100%)
+  - company: 네이버
+    role: 인턴 (대학원 산학협력과제 인턴십)
+    period: 2012.07 — 2012.08
+    bullets:
+      - 버전 관리 시스템 NFORGE 4 개발에 참여 - Java PlayFramework 기반 웹서버 개발 (기여도 10%)
+education:
+  - school: KAIST
+    degree: 박사, 전산학부
+    period: 2012.03 — 2024.08
+    thesis: 소프트웨어 아키텍처 재구축 연구
+    description: 소스코드와 실행 로그들로부터 실행 관점의 소프트웨어 아키텍처 모델을 재구축하는 방법에 대한 연구.
+    papers:
+      - 'Reconstruction of an execution architecture view by identifying mapping rules for connectors. Journal of Systems and Software (SCIE), Vol. 220, Feb. 2025.'
+      - 'Reconstruction of execution architecture view using dependency relationships and execution traces. SAC 2018, Pau, France.'
+  - school: KAIST & Carnegie Mellon University
+    degree: 석사, 소프트웨어공학프로그램 · MSIT-SE (공동)
+    period: 2010.08 — 2012.02
+    description: CMU–KAIST 공동석사 과정. 소프트웨어 공학(프로세스, 아키텍처, 분석 등) 특화 과정으로 소프트웨어 아키텍처, 프로세스, 분석을 주요 학업 내용으로 함.
+    papers:
+      - 'Analysis of Software Product Line Architecture Representation Mechanisms. SERA 2011, Maryland, USA.'
+  - school: KAIST
+    degree: 학사, 전산학과
+    period: 2005.02 — 2010.08
+works:
+  - title: (강의) 블록체인의 기술, 한계, 활용방안
+    year: "2020.06 — 2022.03"
+    meta: 충남지방공무원교육원 (총 6회)
+  - title: (강의) Hyperledger Fabric 개발 강의 및 실습”,
+    year: "2020.06 — 2022.02"
+    meta: 대구디지털산업진흥원 (총 3회)
+  - title: (강의) 소프트웨어 아키텍처 소개 및 문서화
+    year: "2019.07"
+    meta: NEXTERS (1회)
+  - title: (강의) 소프트웨어 아키텍처 설계 기술
+    year: "2017.03 — 2017.10"
+    meta: 세메스 주식회사 (1회 - 연강)
+  - title: (도서) 자바스크립트로 함께하는 블록체인 코딩 (한국어판)
+    year: "2020.02"
+    meta: 홍릉과학출판사, 원서 “Learn Blockchain Programming with Javascript, Eric Traub, 2018, Packt” 번역 한국어판
