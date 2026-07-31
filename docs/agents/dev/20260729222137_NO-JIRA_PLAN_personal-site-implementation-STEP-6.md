@@ -9,6 +9,8 @@ Step: 6
 
 # Step 6: Projects + Posts + PostDetail
 
+Report: [20260729222137_NO-JIRA_IMPL_personal-site-implementation-STEP-6.md](./20260729222137_NO-JIRA_IMPL_personal-site-implementation-STEP-6.md)
+
 Part of main plan: [20260729222137_NO-JIRA_PLAN_personal-site-implementation.md](./20260729222137_NO-JIRA_PLAN_personal-site-implementation.md)
 
 ## Depends On
@@ -95,9 +97,9 @@ FR-4 (Projects), FR-5 (Posts 인덱스), FR-6 (Post 상세 + 프리렌더).
 
 ## TODOs
 
-- [ ] `pages/Projects.tsx`와 `/projects` 라우트를 구현한다 — 상단 보더만, 빈 `tech`는 칩 컨테이너 생략, `link` 없으면 `<span>` (AC-3, AC-4)
-- [ ] `pages/Posts.tsx`와 `/posts` 라우트를 구현한다 — 연도 그리드, 행 전체가 링크, 요약·태그 없음, 포스트 0개면 그룹 미렌더 (AC-5)
-- [ ] `components/PostBody.tsx`와 `src/styles/post-body.css`를 만든다 — 테마 변수만 참조, 매직 넘버 0 (AC-6)
-- [ ] `pages/PostDetail.tsx`와 `/posts/:slug` 라우트를 구현한다 — 라우트 `loader`에서 `loadPostBody(slug)` 호출, 날짜는 ISO 포맷, 태그 없음 (AC-2)
-- [ ] `react-router.config.ts`의 `prerender()`를 `getStaticPaths()` + draft 아닌 포스트 slug로 확장한다 (AC-1, AC-7)
-- [ ] 빌드 산출물에서 draft 제외와 본문 인라인을 확인한다 (AC-1, AC-2)
+- [x] `pages/Projects.tsx`와 `/projects` 라우트를 구현한다 — 상단 보더만, 빈 `tech`는 칩 컨테이너 생략, `link` 없으면 `<span>` (AC-3, AC-4)
+- [x] `pages/Posts.tsx`와 `/posts` 라우트를 구현한다 — 연도 그리드, 행 전체가 링크, 요약·태그 없음, 포스트 0개면 그룹 미렌더 (AC-5)
+- [x] `components/PostBody.tsx`와 `src/styles/post-body.css`를 만든다 — 테마 변수만 참조, 매직 넘버 0 (AC-6)
+- [x] `pages/PostDetail.tsx`와 `/posts/:slug` 라우트를 구현한다 — 라우트 `loader`에서 `loadPostBody(slug)` 호출, 날짜는 ISO 포맷, 태그 없음 (AC-2)
+- [x] `react-router.config.ts`의 `prerender()`를 `getStaticPaths()` + draft 아닌 포스트 slug로 확장한다 (AC-1, AC-7)
+- [x] 빌드 산출물에서 draft 제외와 본문 인라인을 확인한다 (AC-1, AC-2)
