@@ -1,4 +1,4 @@
-intro: 개인 오픈소스 작업입니다. 더 공개하는 대로 목록을 늘려 갈 예정입니다.
+intro: 개인 프로젝트들입니다. 관리가 중단된 프로젝트들도 있습니다.
 projects:
   - name: personal-harness
     description: Codex, Claude Code 등 AI coding agent를 위한 개인 개발 워크플로우 지원 하네스. Agent Skills, Hooks, Custom Agents, Global Instructions 로 구성.
