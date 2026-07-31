@@ -1,0 +1,90 @@
+intro:
+  - I am a backend and security engineer with a Ph.D. track in software architecture at KAIST and roughly ten years of experience building and operating production systems. My focus is the full lifecycle of safe, high-performance backends — design, implementation, and operations.
+  - I work primarily in Go and Node.js on large-scale web backends and distributed systems, with data integrity and security as core design values. I am comfortable operating cloud-native environments on AWS EKS and GCP Cloud Run, and I care about systems that stay scalable and reliable under real load.
+stack:
+  - group: Languages
+    items:
+      - Go
+      - Node.js
+      - TypeScript
+      - Java
+  - group: Backend
+    items:
+      - REST
+      - gRPC
+      - JSON-RPC
+      - software architecture
+  - group: Infra
+    items:
+      - AWS
+      - GCP
+      - Docker
+      - EKS
+      - Cloud Run
+      - CI/CD
+  - group: Data
+    items:
+      - PostgreSQL
+      - Redis
+      - MongoDB
+      - Firebase
+      - SQLite
+      - BigQuery
+  - group: Frontend
+    items:
+      - React
+      - Vite
+      - Next.js
+  - group: AI tooling
+    items:
+      - Codex
+      - Claude Code
+experience:
+  - company: 42dot
+    role: Sr. Security Engineer, Security Platform Team
+    period: 2024.01 — present
+    bullets:
+      - Designed, built, and operate a data-integrity security platform of 25+ servers on AWS EKS, with a private blockchain as a core component.
+      - Raised platform throughput more than 3× through nonce-management caching, failover design, and a custom Go load balancer that routes by node sync health.
+      - Built Prometheus/Grafana monitoring with Slack alerts, and a Redis-to-PostgreSQL failover path that keeps latency within about 10% under failure.
+      - Operated a vulnerability-database pipeline that normalizes 10+ public sources, including ~130M BigQuery rows, with zero production resource outages.
+      - Built a KMIP 3.0 / mTLS middleware that supplies keys from an external KMS into production CI/CD pipelines, plus a back-office dashboard for key lifecycle tracking.
+  - company: Bigpicture Lab
+    role: CTO & Fullstack Engineer
+    period: 2018.05 — 2023.12
+    bullets:
+      - Led product engineering for an anonymous community service and a talent-evaluation SaaS, growing the engineering team to about ten people.
+      - Designed and operated a Go REST API on GCP Cloud Run for a B2B talent-evaluation solution adopted in pilot by ~10 companies.
+      - Built a blockchain-based anonymous community with wallet auth and rewards; ran it for a year as a Daejeon civic channel with ~2,700 users.
+      - Partnered with ETRI and KOMSCO on experimental services spanning DID/token data exchange and multi-chain NFT middleware.
+  - company: NavMine
+    role: Founder & Software Engineer
+    period: 2016.03 — 2018.05
+    bullets:
+      - Built and sold NavMine, a code recommendation and exploration tool for Java developers.
+      - Developed application algorithms and Java bytecode instrumentation with ASM, plus a multi-platform Electron client.
+  - company: Naver
+    role: Intern, industry–academia cooperation program
+    period: 2012.07 — 2012.08
+    bullets:
+      - Contributed to NFORGE 4 (Yobi), a version-control web server built with the Java Play Framework.
+education:
+  - school: KAIST
+    degree: Ph.D. in Computer Science
+    period: 2012.03 — 2024.08
+    thesis: Software architecture reconstruction
+    description: Research on reconstructing an execution-perspective software architecture model from source code and runtime logs.
+    papers:
+      - 'Reconstruction of an execution architecture view by identifying mapping rules for connectors. Journal of Systems and Software (SCIE), Vol. 220, Feb. 2025.'
+      - 'Reconstruction of execution architecture view using dependency relationships and execution traces. SAC 2018, Pau, France.'
+  - school: KAIST & Carnegie Mellon University
+    degree: M.S. in Software Engineering (joint MSIT-SE)
+    period: 2010.08 — 2012.02
+    thesis: Software engineering specialization (process, architecture, analysis)
+    description: Joint KAIST–CMU master's program focused on software architecture, process, and analysis.
+    papers:
+      - 'Analysis of Software Product Line Architecture Representation Mechanisms. SERA 2011, Maryland, USA.'
+  - school: KAIST
+    degree: B.S. in Computer Science
+    period: 2005.02 — 2010.08
+works: []

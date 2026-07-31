@@ -1,0 +1,8 @@
+intro: Personal open-source work. The list will grow as I publish more.
+projects:
+  - name: personal-harness
+    description: A personal development-workflow harness for AI coding agents (Codex, Claude Code).
+    tech:
+      - Codex
+      - Claude Code
+    link: https://github.com/byron1st/personal-harness

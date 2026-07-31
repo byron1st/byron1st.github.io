@@ -11,6 +11,8 @@ Step: 2
 
 Part of main plan: [20260729222137_NO-JIRA_PLAN_personal-site-implementation.md](./20260729222137_NO-JIRA_PLAN_personal-site-implementation.md)
 
+Report: [20260729222137_NO-JIRA_IMPL_personal-site-implementation-STEP-2.md](./20260729222137_NO-JIRA_IMPL_personal-site-implementation-STEP-2.md)
+
 ## Depends On
 
 Step 1 (툴체인 기반) — `@rollup/plugin-yaml`, `*.yaml` 앰비언트 타입, Vitest 설정이 준비돼 있어야 한다.
@@ -88,10 +90,10 @@ UI 언어는 영어이므로 YAML 값도 영어로 쓴다(포스트 본문만 �
 
 ## TODOs
 
-- [ ] `src/content/schema.ts`에 profile·about·projects zod 스키마와 `z.infer` 파생 타입을 정의한다 — `works`·`thesis`·`description`·`papers`·`link`·`tech`는 선택 필드 (AC-3)
-- [ ] 세 로더 모듈이 YAML을 검증해 상수로 export 하게 만든다. 검증 실패는 파일 경로가 담긴 메시지로 즉시 throw (AC-2)
-- [ ] `content/profile.yaml`을 resume 기반 실데이터로 채운다 — socials는 github·email만 (AC-1, AC-5)
-- [ ] `content/about.yaml`을 채운다 — intro·stack·experience 4건·education 3건(학사는 선택 필드 없음)·`works: []` (AC-1, AC-3)
-- [ ] `content/projects.yaml`에 `personal-harness` 1건을 채운다 (AC-1)
-- [ ] `src/lib/date.ts`에 짧은 포맷·ISO 포맷 함수를 만든다 — 로케일·타임존 비의존 (AC-4)
-- [ ] 스키마 필수/선택 필드와 날짜 포맷터의 단위 테스트를 작성한다 (AC-3, AC-4)
+- [x] `src/content/schema.ts`에 profile·about·projects zod 스키마와 `z.infer` 파생 타입을 정의한다 — `works`·`thesis`·`description`·`papers`·`link`·`tech`는 선택 필드 (AC-3)
+- [x] 세 로더 모듈이 YAML을 검증해 상수로 export 하게 만든다. 검증 실패는 파일 경로가 담긴 메시지로 즉시 throw (AC-2)
+- [x] `content/profile.yaml`을 resume 기반 실데이터로 채운다 — socials는 github·email만 (AC-1, AC-5)
+- [x] `content/about.yaml`을 채운다 — intro·stack·experience 4건·education 3건(학사는 선택 필드 없음)·`works: []` (AC-1, AC-3)
+- [x] `content/projects.yaml`에 `personal-harness` 1건을 채운다 (AC-1)
+- [x] `src/lib/date.ts`에 짧은 포맷·ISO 포맷 함수를 만든다 — 로케일·타임존 비의존 (AC-4)
+- [x] 스키마 필수/선택 필드와 날짜 포맷터의 단위 테스트를 작성한다 (AC-3, AC-4)
